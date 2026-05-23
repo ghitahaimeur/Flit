@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLIT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --iv:   #F5F0E8;
+    --iv2:  #EDE8DF;
+    --enc:  #1A1714;
+    --vb:   #2C4A3E;
+    --vp:   #20372D;
+    --do:   #C4A882;
+    --gr:   #8A8480;
+    --nu:   #2A3548;
+    --display: 'Cormorant Garamond', Georgia, serif;
+    --sans:  -apple-system, 'Helvetica Neue', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { background: var(--enc); }
+
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto 3px;
+    display: block;
+  }
+
+  /* ════════════════════════════════
+     SLIDE 1 — LOGO ANIMÉ
+  ════════════════════════════════ */
+  .s1 { background: var(--iv); }
+
+  .s1-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-svg-wrap {
+    width: 360px;
+    margin-bottom: 40px;
+  }
+
+  .logo-wordmark {
+    font-family: var(--sans);
+    font-size: 64px;
+    font-weight: 200;
+    letter-spacing: 0.55em;
+    color: var(--enc);
+    text-indent: 0.55em; /* compensate letter-spacing on last char */
+    margin-bottom: 28px;
+  }
+
+  .logo-method {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    color: var(--gr);
+    text-transform: uppercase;
+  }
+
+  .logo-phrase {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gr);
+    letter-spacing: 0.02em;
+  }
+
+  /* ════════════════════════════════
+     SLIDE 2 — HERO ÉDITORIAL
+  ════════════════════════════════ */
+  .s2 { background: var(--enc); }
+
+  .s2-logo {
+    position: absolute;
+    top: 60px;
+    left: 72px;
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 200;
+    letter-spacing: 0.4em;
+    color: rgba(245,240,232,0.4);
+  }
+
+  .s2-num {
+    position: absolute;
+    top: 64px;
+    right: 72px;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: rgba(245,240,232,0.2);
+  }
+
+  .s2-hero {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 72px;
+  }
+
+  .s2-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .s2-line {
+    font-family: var(--display);
+    font-weight: 300;
+    color: var(--iv);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  .s2-line-1 { font-size: 160px; }
+  .s2-line-2 { font-size: 160px; }
+  .s2-line-3 { font-size: 160px; font-style: italic; color: var(--do); }
+
+  .s2-sub {
+    margin-top: 48px;
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .s2-bar {
+    width: 1px;
+    height: 80px;
+    background: var(--do);
+    opacity: 0.5;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .s2-right {
+    font-family: var(--display);
+    font-size: 28px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(245,240,232,0.55);
+    line-height: 1.4;
+    max-width: 520px;
+  }
+
+  .s2-bottom {
+    position: absolute;
+    bottom: 72px;
+    left: 72px;
+    right: 72px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .s2-tag {
+    background: var(--vb);
+    color: var(--iv);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    border-radius: 50px;
+  }
+
+  .s2-aside {
+    text-align: right;
+    font-family: var(--sans);
+    font-size: 12px;
+    color: rgba(245,240,232,0.25);
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+  }
+
+  /* ════════════════════════════════
+     SLIDE 3 — DÉPOSER · CLARIFIER · AVANCER
+  ════════════════════════════════ */
+  .s3 { background: var(--iv); }
+
+  .s3-logo {
+    position: absolute;
+    top: 60px;
+    left: 72px;
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 200;
+    letter-spacing: 0.4em;
+    color: rgba(26,23,20,0.3);
+  }
+
+  .s3-num {
+    position: absolute;
+    top: 64px;
+    right: 72px;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: rgba(26,23,20,0.2);
+  }
+
+  /* Three columns */
+  .s3-cols {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .s3-col {
+    padding: 180px 52px 80px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(26,23,20,0.08);
+  }
+
+  .s3-col:last-child { border-right: none; }
+
+  .s3-col.col-2 { background: var(--enc); }
+  .s3-col.col-3 { background: var(--vb); }
+
+  .s3-col-num {
+    font-family: var(--display);
+    font-size: 200px;
+    font-weight: 300;
+    line-height: 1;
+    color: rgba(26,23,20,0.05);
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    letter-spacing: -0.05em;
+  }
+
+  .col-2 .s3-col-num { color: rgba(245,240,232,0.04); }
+  .col-3 .s3-col-num { color: rgba(245,240,232,0.06); }
+
+  .s3-col-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--do);
+    margin-bottom: 18px;
+    display: block;
+  }
+
+  .s3-col-title {
+    font-family: var(--display);
+    font-size: 72px;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    color: var(--enc);
+    margin-bottom: 32px;
+  }
+
+  .col-2 .s3-col-title,
+  .col-3 .s3-col-title { color: var(--iv); }
+
+  .s3-col-desc {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gr);
+    line-height: 1.75;
+    margin-bottom: 32px;
+  }
+
+  .col-2 .s3-col-desc,
+  .col-3 .s3-col-desc { color: rgba(245,240,232,0.5); }
+
+  .s3-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .s3-pill {
+    display: inline-block;
+    padding: 7px 16px;
+    border-radius: 50px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    width: fit-content;
+  }
+
+  .col-1 .s3-pill { background: rgba(26,23,20,0.07); color: var(--enc); }
+  .col-2 .s3-pill { background: rgba(245,240,232,0.08); color: rgba(245,240,232,0.7); }
+  .col-3 .s3-pill { background: rgba(245,240,232,0.1); color: rgba(245,240,232,0.8); }
+
+  /* ════════════════════════════════
+     SLIDE 4 — MOCKUP + FEATURES
+  ════════════════════════════════ */
+  .s4 { background: var(--iv); }
+
+  .s4-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 700px 500px at 60% 40%, rgba(44,74,62,0.07) 0%, transparent 70%);
+  }
+
+  .s4-logo {
+    position: absolute;
+    top: 60px;
+    left: 72px;
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 200;
+    letter-spacing: 0.4em;
+    color: rgba(26,23,20,0.3);
+  }
+
+  /* Phone */
+  .s4-phone {
+    position: absolute;
+    right: 100px;
+    top: 120px;
+    width: 310px;
+    height: 636px;
+  }
+
+  .phone-outer {
+    width: 100%;
+    height: 100%;
+    background: var(--enc);
+    border-radius: 46px;
+    position: relative;
+    box-shadow:
+      0 60px 120px rgba(26,23,20,0.25),
+      0 0 0 1px rgba(255,255,255,0.07) inset,
+      0 0 0 7px rgba(26,23,20,0.85);
+    overflow: hidden;
+  }
+
+  .p-island {
+    position: absolute;
+    top: 13px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 30px;
+    background: #000;
+    border-radius: 50px;
+    z-index: 10;
+  }
+
+  .p-screen {
+    position: absolute;
+    inset: 7px;
+    background: var(--iv);
+    border-radius: 40px;
+    overflow: hidden;
+  }
+
+  /* App screen: deposit */
+  .p-header {
+    padding: 60px 22px 0;
+    text-align: center;
+  }
+
+  .p-h-sup {
+    font-family: var(--sans);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--do);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .p-h-title {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--enc);
+    line-height: 1.3;
+  }
+
+  .p-input-area {
+    margin: 24px 18px 0;
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    min-height: 100px;
+    border: 1px solid rgba(26,23,20,0.07);
+    box-shadow: 0 2px 16px rgba(26,23,20,0.04);
+  }
+
+  .p-input-placeholder {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: rgba(26,23,20,0.3);
+    line-height: 1.5;
+  }
+
+  .p-input-cursor {
+    display: inline-block;
+    width: 1.5px;
+    height: 14px;
+    background: var(--vb);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .p-btn {
+    margin: 16px 18px 0;
+    background: var(--enc);
+    border-radius: 50px;
+    padding: 14px;
+    text-align: center;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--iv);
+  }
+
+  .p-divider {
+    margin: 20px 18px;
+    height: 1px;
+    background: rgba(26,23,20,0.07);
+  }
+
+  /* thought card in phone */
+  .p-card {
+    margin: 0 14px 10px;
+    background: white;
+    border-radius: 16px;
+    padding: 14px;
+    border: 1px solid rgba(26,23,20,0.06);
+  }
+
+  .p-card-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .p-card-sym {
+    font-size: 14px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .sym-a { background: rgba(44,74,62,0.1); }
+  .sym-k { background: rgba(42,53,72,0.1); }
+  .sym-i { background: rgba(196,168,130,0.15); }
+
+  .p-card-text {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--enc);
+    line-height: 1.3;
+    font-weight: 400;
+  }
+
+  .p-card-tag {
+    display: inline-block;
+    background: var(--iv2);
+    border-radius: 50px;
+    padding: 3px 10px;
+    font-size: 9px;
+    color: var(--gr);
+    font-family: var(--sans);
+  }
+
+  /* Nav */
+  .p-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 72px;
+    background: rgba(245,240,232,0.97);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(26,23,20,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 4px 12px;
+  }
+
+  .pn-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .pn-ico { font-size: 16px; }
+  .pn-lbl { font-size: 8px; color: var(--gr); font-family: var(--sans); }
+  .pn-item.pna .pn-lbl { color: var(--vb); font-weight: 600; }
+
+  .pn-plus {
+    width: 40px;
+    height: 40px;
+    background: var(--enc);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--iv);
+    font-size: 20px;
+    font-weight: 200;
+    margin-bottom: 8px;
+  }
+
+  /* Feature list (left of phone) */
+  .s4-features {
+    position: absolute;
+    top: 148px;
+    left: 72px;
+    width: 520px;
+  }
+
+  .s4-sup {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--do);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .s4-title {
+    font-family: var(--display);
+    font-size: 72px;
+    font-weight: 300;
+    color: var(--enc);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 40px;
+  }
+
+  .s4-feat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .s4-feat {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: white;
+    border: 1px solid rgba(26,23,20,0.07);
+  }
+
+  .s4-feat.feat-highlight {
+    background: var(--enc);
+    border-color: transparent;
+  }
+
+  .s4-feat-ico {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .s4-feat-body { flex: 1; }
+
+  .s4-feat-name {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--enc);
+    margin-bottom: 3px;
+  }
+
+  .feat-highlight .s4-feat-name { color: var(--iv); }
+
+  .s4-feat-desc {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--gr);
+    line-height: 1.5;
+  }
+
+  .feat-highlight .s4-feat-desc { color: rgba(245,240,232,0.45); }
+
+  /* floating card below phone */
+  .s4-float {
+    position: absolute;
+    right: 80px;
+    bottom: 180px;
+    width: 310px;
+    background: var(--vb);
+    border-radius: 20px;
+    padding: 22px 24px;
+  }
+
+  .s4-float-label {
+    font-family: var(--sans);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(196,168,130,0.7);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .s4-float-text {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--iv);
+    line-height: 1.4;
+  }
+
+  /* mood strip */
+  .s4-moods {
+    position: absolute;
+    bottom: 64px;
+    left: 72px;
+    right: 72px;
+    display: flex;
+    gap: 10px;
+  }
+
+  .s4-mood {
+    flex: 1;
+    background: white;
+    border: 1px solid rgba(26,23,20,0.08);
+    border-radius: 16px;
+    padding: 16px 14px;
+    text-align: center;
+  }
+
+  .s4-mood-ico { font-size: 22px; display: block; margin-bottom: 6px; }
+  .s4-mood-name {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--enc);
+    margin-bottom: 4px;
+  }
+  .s4-mood-sub {
+    font-family: var(--sans);
+    font-size: 9px;
+    color: var(--gr);
+    line-height: 1.4;
+  }
+
+  .s4-mood.m-on { background: var(--vb); border-color: transparent; }
+  .s4-mood.m-on .s4-mood-name { color: var(--iv); }
+  .s4-mood.m-on .s4-mood-sub { color: rgba(245,240,232,0.5); }
+
+  /* ════════════════════════════════
+     SLIDE 5 — CLOSING QUOTE
+  ════════════════════════════════ */
+  .s5 { background: var(--vp); }
+
+  .s5-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 80px 80px 80px;
+  }
+
+  .s5-logo {
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 200;
+    letter-spacing: 0.5em;
+    color: rgba(245,240,232,0.3);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .s5-logo svg { opacity: 0.3; }
+
+  .s5-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .s5-quote {
+    font-family: var(--display);
+    font-size: 92px;
+    font-weight: 300;
+    color: var(--iv);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    max-width: 900px;
+  }
+
+  .s5-quote em {
+    font-style: italic;
+    color: var(--do);
+  }
+
+  .s5-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .s5-method {
+    display: flex;
+    gap: 0;
+  }
+
+  .s5-m-step {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: rgba(245,240,232,0.4);
+    text-transform: uppercase;
+    padding-right: 20px;
+    border-right: 1px solid rgba(245,240,232,0.12);
+    margin-right: 20px;
+  }
+
+  .s5-m-step:last-child {
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .s5-cta {
+    background: var(--do);
+    color: var(--enc);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    border-radius: 50px;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     SLIDE 1 — LOGO ANIMÉ
+══════════════════════════════════ -->
+<div class="slide s1">
+  <div class="s1-inner">
+
+    <div class="logo-svg-wrap">
+      <svg id="logo-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- TANGLE: nœud complexe -->
+        <path id="knot-path"
+          d="M 110 62
+             C 112 40, 132 28, 145 46
+             C 158 64, 143 88, 122 84
+             C 101 80, 86 60, 98 44
+             C 110 28, 136 36, 130 58
+             C 124 80, 100 84, 89 67
+             C 78 50, 95 32, 118 42
+             C 141 52, 138 80, 116 85
+             C 94 90, 76 70, 86 52
+             C 96 34, 124 40, 118 62
+             L 258 62"
+          stroke="#1A1714"
+          stroke-width="1.3"
+          stroke-linecap="round"
+          fill="none"/>
+
+        <!-- CLEAN LINE: fil dénoué -->
+        <path id="clean-path"
+          d="M 30 62 C 90 52, 170 72, 258 62"
+          stroke="#1A1714"
+          stroke-width="1.3"
+          stroke-linecap="round"
+          fill="none"
+          opacity="0"/>
+
+      </svg>
+    </div>
+
+    <div class="logo-wordmark">FLIT</div>
+    <div class="logo-method">Déposer · Clarifier · Avancer</div>
+
+    <div class="logo-phrase">
+      Tout ce que tu déposes mérite d'abord d'être compris.
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SLIDE 2 — HERO ÉDITORIAL
+══════════════════════════════════ -->
+<div class="slide s2">
+  <div class="s2-logo">FLIT</div>
+  <div class="s2-num">01 / 04</div>
+
+  <div class="s2-hero">
+    <div class="s2-text">
+      <span class="s2-line s2-line-1">Dépose</span>
+      <span class="s2-line s2--2" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:160px;font-weight:300;color:var(--iv);line-height:0.92;letter-spacing:-0.02em;">ce qui</span>
+      <span class="s2-line s2-line-3">tourne.</span>
+
+      <div class="s2-sub">
+        <div class="s2-bar"></div>
+        <p class="s2-right">
+          Un espace pour déposer ce qui prend de la place,
+          clarifier tes pensées, puis avancer selon
+          ton état intérieur — sans te brusquer.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="s2-bottom">
+    <div class="s2-tag">Bientôt disponible</div>
+    <div class="s2-aside">
+      Application web · iOS · Android<br>
+      Espace mental premium
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SLIDE 3 — DÉPOSER · CLARIFIER · AVANCER
+══════════════════════════════════ -->
+<div class="slide s3">
+  <div class="s3-logo">FLIT</div>
+  <div class="s3-num">02 / 04</div>
+
+  <div class="s3-cols">
+
+    <div class="s3-col col-1">
+      <div>
+        <div class="s3-col-num">1</div>
+        <span class="s3-col-label">Le geste d'entrée</span>
+        <div class="s3-col-title">Déposer</div>
+        <p class="s3-col-desc">
+          Un seul champ. Un seul bouton.
+          Aucune catégorie, aucun symbole,
+          aucune décision. La pensée sort
+          de la tête et atterrit en sécurité.
+        </p>
+      </div>
+      <div class="s3-tags">
+        <span class="s3-pill">Zéro friction</span>
+        <span class="s3-pill">Aucun choix</span>
+        <span class="s3-pill">Qu'est-ce qui prend de la place ?</span>
+      </div>
+    </div>
+
+    <div class="s3-col col-2">
+      <div>
+        <div class="s3-col-num">2</div>
+        <span class="s3-col-label">Comprendre avant de former</span>
+        <div class="s3-col-title">Clarifier</div>
+        <p class="s3-col-desc">
+          Plus tard, quand tu es prête.
+          Une nature, une Bulle, une énergie.
+          Pas un formulaire froid.
+          Un geste, en trois lignes.
+        </p>
+      </div>
+      <div class="s3-tags">
+        <span class="s3-pill">⚡ À faire</span>
+        <span class="s3-pill">🌀 Ça tourne</span>
+        <span class="s3-pill">💡 Ça germe</span>
+        <span class="s3-pill">🔔 Ne pas oublier</span>
+      </div>
+    </div>
+
+    <div class="s3-col col-3">
+      <div>
+        <div class="s3-col-num">3</div>
+        <span class="s3-col-label">Selon ton énergie réelle</span>
+        <div class="s3-col-title">Avancer</div>
+        <p class="s3-col-desc">
+          Tu choisis ton mood. FLIT active
+          la matrice invisible et te montre
+          une carte à la fois — celle qui
+          correspond à ce que tu peux porter.
+        </p>
+      </div>
+      <div class="s3-tags">
+        <span class="s3-pill">⚡ On fire</span>
+        <span class="s3-pill">🔥 Sous pression</span>
+        <span class="s3-pill">🌿 Au ralenti</span>
+        <span class="s3-pill">🌫️ En flottement</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SLIDE 4 — MOCKUP APP
+══════════════════════════════════ -->
+<div class="slide s4">
+  <div class="s4-bg"></div>
+  <div class="s4-logo">FLIT</div>
+
+  <!-- Left: headline + features -->
+  <div class="s4-features">
+    <span class="s4-sup">Une app pensée différemment</span>
+    <h2 class="s4-title">Rencontre<br>une pensée<br>à la fois.</h2>
+
+    <div class="s4-feat-list">
+      <div class="s4-feat feat-highlight">
+        <span class="s4-feat-ico">⟺</span>
+        <div class="s4-feat-body">
+          <div class="s4-feat-name">Carousel anti-overwhelm</div>
+          <div class="s4-feat-desc">Jamais de liste. Swipe pour appliquer le mouvement juste. Une pensée, un geste.</div>
+        </div>
+      </div>
+      <div class="s4-feat">
+        <span class="s4-feat-ico">◉</span>
+        <div class="s4-feat-body">
+          <div class="s4-feat-name">Matrice invisible</div>
+          <div class="s4-feat-desc">FLIT filtre selon ton mood, l'énergie requise, le poids mental. Tu vois ce que tu peux porter.</div>
+        </div>
+      </div>
+      <div class="s4-feat">
+        <span class="s4-feat-ico">◯</span>
+        <div class="s4-feat-body">
+          <div class="s4-feat-name">Les Bulles</div>
+          <div class="s4-feat-desc">Des mondes de vie avec vision board. Pas des dossiers froids. Pas des filtres.</div>
+        </div>
+      </div>
+      <div class="s4-feat">
+        <span class="s4-feat-ico">∿</span>
+        <div class="s4-feat-body">
+          <div class="s4-feat-name">Traces</div>
+          <div class="s4-feat-desc">Pas de streak. Pas de score. Juste : ce qui a trouvé sa place. Il y a moins de bruit.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phone -->
+  <div class="s4-phone">
+    <div class="phone-outer">
+      <div class="p-island"></div>
+      <div class="p-screen">
+
+        <div class="p-header">
+          <span class="p-h-sup">Déposer</span>
+          <div class="p-h-title">Qu'est-ce qui prend<br>de la place ?</div>
+        </div>
+
+        <div class="p-input-area">
+          <span class="p-input-placeholder">
+            Je me sens bloquée dans ce projet depuis des semaines<span class="p-input-cursor"></span>
+          </span>
+        </div>
+
+        <div class="p-btn">Déposer</div>
+
+        <div class="p-divider"></div>
+
+        <div class="p-card">
+          <div class="p-card-top">
+            <div class="p-card-sym sym-k">🌀</div>
+            <span class="p-card-text">Je procrastine sur la décision importante</span>
+          </div>
+          <span class="p-card-tag">Énergie intense · Travail</span>
+        </div>
+
+        <div class="p-card">
+          <div class="p-card-top">
+            <div class="p-card-sym sym-i">💡</div>
+            <span class="p-card-text">Idée pour le projet créatif</span>
+          </div>
+          <span class="p-card-tag">Énergie douce · Création</span>
+        </div>
+
+        <div class="p-card">
+          <div class="p-card-top">
+            <div class="p-card-sym sym-a">⚡</div>
+            <span class="p-card-text">Appeler le médecin</span>
+          </div>
+          <span class="p-card-tag">À ne pas laisser filer</span>
+        </div>
+
+        <div class="p-nav">
+          <div class="pn-item">
+            <span class="pn-ico">⌂</span>
+            <span class="pn-lbl">Accueil</span>
+          </div>
+          <div class="pn-item pna">
+            <div class="pn-plus">+</div>
+            <span class="pn-lbl">Déposer</span>
+          </div>
+          <div class="pn-item">
+            <span class="pn-ico">◉</span>
+            <span class="pn-lbl">Moment</span>
+          </div>
+          <div class="pn-item">
+            <span class="pn-ico">∿</span>
+            <span class="pn-lbl">Traces</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Float card -->
+  <div class="s4-float">
+    <span class="s4-float-label">Mode surcharge</span>
+    <div class="s4-float-text">"Tu n'as pas besoin<br>de tout porter<br>maintenant."</div>
+  </div>
+
+  <!-- Mood strip -->
+  <div class="s4-moods">
+    <div class="s4-mood m-on">
+      <span class="s4-mood-ico">⚡</span>
+      <div class="s4-mood-name">On fire</div>
+      <div class="s4-mood-sub">Énergie haute</div>
+    </div>
+    <div class="s4-mood">
+      <span class="s4-mood-ico">🔥</span>
+      <div class="s4-mood-name">Sous pression</div>
+      <div class="s4-mood-sub">1–3 cartes max</div>
+    </div>
+    <div class="s4-mood">
+      <span class="s4-mood-ico">🌿</span>
+      <div class="s4-mood-name">Au ralenti</div>
+      <div class="s4-mood-sub">Énergie douce</div>
+    </div>
+    <div class="s4-mood">
+      <span class="s4-mood-ico">🌫️</span>
+      <div class="s4-mood-name">En flottement</div>
+      <div class="s4-mood-sub">Pas de pression</div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════
+     SLIDE 5 — CLOSING QUOTE
+══════════════════════════════════ -->
+<div class="slide s5">
+  <div class="s5-inner">
+
+    <div class="s5-logo">
+      <svg width="28" height="18" viewBox="0 0 280 130" fill="none">
+        <path d="M 110 62 C 112 40, 132 28, 145 46 C 158 64, 143 88, 122 84 C 101 80, 86 60, 98 44 C 110 28, 136 36, 130 58 C 124 80, 100 84, 89 67 L 258 62" stroke="var(--iv)" stroke-width="5" stroke-linecap="round" fill="none"/>
+      </svg>
+      FLIT
+    </div>
+
+    <div class="s5-center">
+      <div class="s5-quote">
+        La profondeur<br>
+        est dans le système.<br>
+        La simplicité dans<br>
+        <em>l'expérience.</em>
+      </div>
+    </div>
+
+    <div class="s5-bottom">
+      <div class="s5-method">
+        <span class="s5-m-step">Déposer</span>
+        <span class="s5-m-step">Clarifier</span>
+        <span class="s5-m-step">Avancer</span>
+      </div>
+      <div class="s5-cta">Bientôt disponible</div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+// ── Animation du logo : nœud → fil ──────────────────────────────────
+
+window.addEventListener('load', () => {
+  const knot = document.getElementById('knot-path');
+  const clean = document.getElementById('clean-path');
+
+  if (!knot || !clean) return;
+
+  const kLen = knot.getTotalLength();
+  const cLen = clean.getTotalLength();
+
+  // Init
+  knot.style.strokeDasharray = kLen;
+  knot.style.strokeDashoffset = kLen;
+  clean.style.strokeDasharray = cLen;
+  clean.style.strokeDashoffset = cLen;
+
+  function playSequence() {
+    // Phase 1 — Draw the knot (1.6s)
+    setTimeout(() => {
+      knot.style.transition = 'stroke-dashoffset 1.6s cubic-bezier(0.4,0,0.2,1)';
+      knot.style.strokeDashoffset = 0;
+      knot.style.opacity = 1;
+      clean.style.opacity = 0;
+      clean.style.strokeDashoffset = cLen;
+      clean.style.transition = 'none';
+    }, 400);
+
+    // Phase 2 — Hold (knot visible)
+    // Phase 3 — Unravel: knot erases, clean line draws (1.4s)
+    setTimeout(() => {
+      // Erase knot (from start, so it pulls through)
+      knot.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease 1.1s';
+      knot.style.strokeDashoffset = -kLen;
+      knot.style.opacity = 0;
+
+      // Draw clean line
+      clean.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1), opacity 0.1s ease';
+      clean.style.opacity = 1;
+      clean.style.strokeDashoffset = 0;
+    }, 2800);
+
+    // Phase 4 — Hold clean line, then restart
+    setTimeout(() => {
+      playSequence();
+    }, 5800);
+  }
+
+  playSequence();
+});
+</script>
+
+</body>
+</html>
