@@ -2,151 +2,147 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>FLIT</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
-:root {
+:root{
   --iv:#F5F0E8;--iv2:#EDE8DF;--iv3:#E5DFD4;
   --enc:#1A1714;--vb:#2C4A3E;--vp:#20372D;
   --do:#C4A882;--gr:#8A8480;--gr2:#B8B4B0;
   --nu:#2A3548;--tb:#4A3728;
   --d:'Cormorant Garamond',Georgia,serif;
   --s:-apple-system,'Helvetica Neue',sans-serif;
-  --r:18px;--nav:76px;
+  --r:18px;--nh:72px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden}
 body{font-family:var(--s);background:#111;display:flex;align-items:center;justify-content:center}
-#app{width:100%;max-width:430px;height:100dvh;height:100vh;background:var(--iv);position:relative;overflow:hidden;box-shadow:0 0 80px rgba(0,0,0,0.5)}
+#app{position:relative;width:100%;max-width:430px;height:100dvh;height:100vh;background:var(--iv);overflow:hidden;box-shadow:0 0 100px rgba(0,0,0,.6)}
 
-/* VIEWS */
-.view{position:absolute;inset:0;opacity:0;transform:translateY(14px);transition:opacity .26s ease,transform .26s ease;will-change:opacity,transform}
+/* ── VIEWS ── */
+.view{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transform:translateY(12px);transition:opacity .25s ease,transform .25s ease;will-change:opacity,transform}
 .view.vis{opacity:1;transform:none}
-.view.out{opacity:0;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease}
-.sa{position:absolute;inset:0;bottom:var(--nav);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.sa::-webkit-scrollbar{display:none}
-.sa.full{bottom:0}
+.view.out{opacity:0;transform:translateY(-6px);pointer-events:none}
 
-/* NAV */
-.nav{position:absolute;bottom:0;left:0;right:0;height:var(--nav);background:rgba(245,240,232,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(26,23,20,.08);display:flex;align-items:center;justify-content:space-around;padding:0 4px 14px;z-index:100}
-.ni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:12px;border:none;background:none;-webkit-appearance:none;transition:background .15s}
+/* scroll area: flex:1 + min-height:0 is the key */
+.sa{flex:1;overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.sa::-webkit-scrollbar{display:none}
+
+/* ── NAV ── */
+.nav{flex-shrink:0;height:var(--nh);background:rgba(245,240,232,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(26,23,20,.07);display:flex;align-items:center;justify-content:space-around;padding:0 4px 10px;z-index:100}
+.ni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 12px;border-radius:12px;border:none;background:none;-webkit-appearance:none;transition:background .15s}
 .ni:active{background:rgba(26,23,20,.06)}
-.ni .ico{font-size:20px;line-height:1;color:var(--gr)}
-.ni .lbl{font-size:9px;color:var(--gr);font-weight:500;letter-spacing:.04em}
+.ni .ico{font-size:19px;line-height:1;color:var(--gr)}
+.ni .lbl{font-size:9px;color:var(--gr);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
 .ni.act .ico,.ni.act .lbl{color:var(--vb)}
 .ni.act .lbl{font-weight:700}
-.ni-plus{width:46px;height:46px;border-radius:50%;background:var(--enc);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(26,23,20,.25);transition:transform .15s;-webkit-appearance:none;margin-bottom:6px}
-.ni-plus:active{transform:scale(.93)}
-.ni-plus svg{width:22px;height:22px;stroke:var(--iv);stroke-width:1.5;fill:none}
+.ni-plus{width:44px;height:44px;border-radius:50%;background:var(--enc);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(26,23,20,.3);transition:transform .15s;-webkit-appearance:none;margin-bottom:6px}
+.ni-plus:active{transform:scale(.92)}
+.ni-plus svg{width:20px;height:20px;stroke:var(--iv);stroke-width:1.8;fill:none}
 
-/* COMPONENTS */
-.btn{display:block;width:100%;padding:15px;border-radius:50px;border:none;cursor:pointer;font-family:var(--s);font-size:15px;font-weight:500;letter-spacing:.03em;text-align:center;transition:transform .12s,opacity .12s;-webkit-appearance:none}
+/* ── BUTTONS ── */
+.btn{display:block;width:100%;padding:15px 20px;border-radius:50px;border:none;cursor:pointer;font-family:var(--s);font-size:15px;font-weight:500;letter-spacing:.03em;text-align:center;transition:transform .12s,opacity .12s;-webkit-appearance:none}
 .btn:active{transform:scale(.97);opacity:.9}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none !important}
 .btn-p{background:var(--enc);color:var(--iv)}
 .btn-s{background:rgba(26,23,20,.07);color:var(--enc)}
 .btn-g{background:var(--vb);color:var(--iv)}
-.btn-ghost{background:transparent;border:1px solid rgba(26,23,20,.15);color:var(--enc)}
+.btn-ghost{background:transparent;border:1.5px solid rgba(26,23,20,.15);color:var(--enc)}
+.back{background:none;border:none;-webkit-appearance:none;font-size:22px;color:var(--gr);cursor:pointer;padding:4px 0;display:inline-block;line-height:1;transition:color .15s;margin-bottom:16px}
+.back:active{color:var(--enc)}
+.sup{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--do);display:block;margin-bottom:6px}
 
-.sup{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--do);display:block;margin-bottom:8px}
-.back-btn{font-size:22px;color:var(--gr);cursor:pointer;display:inline-block;margin-bottom:16px;padding:4px 0;background:none;border:none;-webkit-appearance:none}
-
-/* CARDS */
-.card{background:#fff;border:1px solid rgba(26,23,20,.07);border-radius:var(--r)}
-.card-d{background:var(--enc);border-radius:var(--r)}
-.card-g{background:var(--vb);border-radius:var(--r)}
-
-/* THOUGHT CARD */
+/* ── THOUGHT CARD ── */
 .tc{background:#fff;border:1px solid rgba(26,23,20,.07);border-radius:14px;padding:14px;cursor:pointer;transition:transform .12s;display:flex;align-items:flex-start;gap:12px}
 .tc:active{transform:scale(.98)}
-.tc-badge{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
-.ba{background:rgba(44,74,62,.1)}.bk{background:rgba(42,53,72,.1)}.bi{background:rgba(196,168,130,.15)}.br{background:rgba(26,23,20,.07)}.bn{background:var(--iv2)}
+.tc-badge{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ba{background:rgba(44,74,62,.1)}.bk{background:rgba(42,53,72,.1)}.bi{background:rgba(196,168,130,.15)}.br{background:rgba(26,23,20,.07)}.bn{background:var(--iv2);color:var(--gr2);font-size:20px}
 .tc-body{flex:1;min-width:0}
-.tc-txt{font-size:14px;color:var(--enc);line-height:1.4;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tc-txt{font-size:14px;color:var(--enc);line-height:1.45;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .tc-meta{display:flex;gap:6px;flex-wrap:wrap}
-.tc-tag{font-size:10px;color:var(--gr);background:var(--iv2);padding:3px 9px;border-radius:50px;font-weight:500}
-.tc-arr{color:var(--gr2);font-size:16px;flex-shrink:0;margin-top:4px}
+.tc-tag{font-size:10px;color:var(--gr);background:var(--iv2);padding:3px 8px;border-radius:50px;font-weight:500}
+.tc-tag-mv{color:var(--vb) !important;background:rgba(44,74,62,.08) !important}
+.tc-arr{color:var(--gr2);font-size:15px;flex-shrink:0;margin-top:4px}
 
-/* PILL */
-.pill{display:inline-flex;align-items:center;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid transparent;transition:all .15s;-webkit-appearance:none}
+/* ── PILL ── */
+.pill{display:inline-flex;align-items:center;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid transparent;transition:all .15s;-webkit-appearance:none;background:none}
 .pill-l{background:rgba(26,23,20,.07);color:var(--enc)}
 .pill-a{background:var(--enc);color:var(--iv)}
 .pill-g{background:var(--vb);color:var(--iv)}
 
-/* INPUT */
-.inp{width:100%;background:#fff;border:1.5px solid rgba(26,23,20,.1);border-radius:14px;padding:16px;font-family:var(--s);font-size:16px;color:var(--enc);outline:none;-webkit-appearance:none;transition:border-color .15s}
-.inp:focus{border-color:var(--vb)}
-.inp::placeholder{color:var(--gr2)}
-
-/* ── SPLASH ── */
-.splash{background:var(--iv);display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%}
-.sp-word{font-family:var(--s);font-size:44px;font-weight:200;letter-spacing:.5em;text-indent:.5em;color:var(--enc);margin:28px 0 16px}
+/* ═══════ SPLASH ═══════ */
+.splash{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--iv)}
+.sp-word{font-family:var(--s);font-size:44px;font-weight:200;letter-spacing:.5em;text-indent:.5em;color:var(--enc);margin:24px 0 14px}
 .sp-meth{font-size:11px;letter-spacing:.2em;color:var(--gr);text-transform:uppercase}
 
-/* ── HOME ── */
+/* ═══════ HOME ═══════ */
 .hw{padding:52px 20px 24px}
 .h-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
-.h-logo-txt{font-family:var(--s);font-size:18px;font-weight:200;letter-spacing:.4em;color:var(--enc)}
+.h-logo-txt{font-family:var(--s);font-size:17px;font-weight:200;letter-spacing:.4em;color:var(--enc)}
 .h-q{font-family:var(--d);font-size:30px;font-weight:300;color:var(--enc);line-height:1.2;margin-bottom:16px;letter-spacing:-.01em}
 .h-bar{background:#fff;border:1px solid rgba(26,23,20,.09);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:10px;margin-bottom:24px;cursor:pointer;transition:box-shadow .15s}
 .h-bar:active{box-shadow:0 4px 20px rgba(26,23,20,.1)}
 .h-bar-ph{flex:1;font-size:15px;color:var(--gr2)}
-.h-bar-btn{background:var(--enc);color:var(--iv);border-radius:50px;padding:7px 16px;font-size:12px;font-weight:500}
+.h-bar-btn{background:var(--enc);color:var(--iv);border-radius:50px;padding:7px 14px;font-size:12px;font-weight:500;white-space:nowrap}
+.h-notice{background:rgba(196,168,130,.1);border:1px solid rgba(196,168,130,.25);border-radius:14px;padding:14px 16px;margin-bottom:14px;cursor:pointer;transition:background .15s}
+.h-notice:active{background:rgba(196,168,130,.18)}
+.hn-sup{font-size:10px;color:var(--do);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.hn-txt{font-size:13px;color:var(--enc);line-height:1.5}
 .h-sec{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gr);margin-bottom:10px}
-.h-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
-.h-act{background:#fff;border:1px solid rgba(26,23,20,.07);border-radius:16px;padding:18px 16px;cursor:pointer;transition:transform .12s;border:none;text-align:left;-webkit-appearance:none;display:block;width:100%}
+.h-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+.h-act{background:#fff;border:1px solid rgba(26,23,20,.07);border-radius:16px;padding:18px 16px;cursor:pointer;transition:transform .12s;text-align:left;-webkit-appearance:none;display:block;width:100%}
 .h-act:active{transform:scale(.97)}
 .ha-ico{font-size:20px;display:block;margin-bottom:8px}
 .ha-name{font-size:13px;font-weight:600;color:var(--enc);margin-bottom:2px}
 .ha-sub{font-size:11px;color:var(--gr)}
-.h-act.hap{background:var(--enc);border:none;grid-column:span 2;display:flex;align-items:center;gap:14px;padding:16px 20px}
-.hap .ha-ico{margin-bottom:0;font-size:22px}
-.hap .ha-name{color:var(--iv);font-size:14px}
-.hap .ha-sub{color:rgba(245,240,232,.5)}
+.h-act-p{background:var(--enc);border:none;border-radius:16px;padding:18px 20px;cursor:pointer;display:flex;align-items:center;gap:14px;grid-column:span 2;transition:transform .12s;-webkit-appearance:none;width:100%;text-align:left}
+.h-act-p:active{transform:scale(.98)}
+.hap-ico{font-size:22px}
 .hap-body{flex:1}
+.hap-name{font-size:14px;font-weight:600;color:var(--iv);margin-bottom:2px}
+.hap-sub{font-size:11px;color:rgba(245,240,232,.5)}
 .hap-arr{color:var(--do);font-size:16px}
-.h-notice{background:rgba(196,168,130,.12);border:1px solid rgba(196,168,130,.25);border-radius:14px;padding:14px 16px;margin-bottom:14px;cursor:pointer}
-.hn-sup{font-size:10px;color:var(--do);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
-.hn-txt{font-size:13px;color:var(--enc)}
 .h-thoughts{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
 
-/* ── DEPOSIT ── */
-.dw{padding:60px 24px 24px;height:100%;display:flex;flex-direction:column}
+/* ═══════ DEPOSIT ═══════ */
+.dep-inner{flex:1;display:flex;flex-direction:column;padding:52px 24px 0;min-height:0}
 .d-q{font-family:var(--d);font-size:34px;font-weight:300;color:var(--enc);line-height:1.2;margin-bottom:8px;letter-spacing:-.01em}
-.d-hint{font-size:13px;color:var(--gr);margin-bottom:24px;line-height:1.5}
-.d-ta{width:100%;flex:1;min-height:150px;max-height:240px;background:#fff;border:1.5px solid rgba(26,23,20,.1);border-radius:20px;padding:20px;font-family:var(--s);font-size:17px;color:var(--enc);resize:none;outline:none;line-height:1.5;transition:border-color .15s;-webkit-appearance:none}
+.d-hint{font-size:13px;color:var(--gr);margin-bottom:20px;line-height:1.6}
+.d-ta{flex:1;min-height:140px;background:#fff;border:1.5px solid rgba(26,23,20,.1);border-radius:20px;padding:20px;font-family:var(--s);font-size:17px;color:var(--enc);resize:none;outline:none;line-height:1.55;transition:border-color .15s;-webkit-appearance:none}
 .d-ta:focus{border-color:var(--vb)}
 .d-ta::placeholder{color:var(--gr2)}
-.d-bot{padding-top:16px}
+.d-bot{padding:14px 24px 24px;flex-shrink:0}
 .d-cnt{text-align:right;font-size:11px;color:var(--gr2);margin-bottom:10px}
-.d-succ{position:absolute;inset:0;background:var(--iv);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;opacity:0;transition:opacity .4s ease;pointer-events:none}
+.d-succ{position:absolute;inset:0;background:var(--iv);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;opacity:0;transition:opacity .4s ease;pointer-events:none;z-index:50}
 .d-succ.show{opacity:1;pointer-events:all}
 .ds-check{width:60px;height:60px;background:var(--vb);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--iv)}
-.ds-word{font-family:var(--d);font-size:42px;font-weight:300;color:var(--enc)}
-.ds-ph{font-size:14px;color:var(--gr);text-align:center;max-width:220px;line-height:1.5}
+.ds-word{font-family:var(--d);font-size:44px;font-weight:300;color:var(--enc)}
+.ds-ph{font-size:14px;color:var(--gr);text-align:center;max-width:220px;line-height:1.6}
 
-/* ── CLARIFY LIST ── */
+/* ═══════ CLARIFY LIST ═══════ */
+.cl-header{padding:52px 20px 16px}
 .cl-list{padding:0 20px;display:flex;flex-direction:column;gap:8px}
-.cl-empty{text-align:center;padding:60px 24px}
+.cl-empty{text-align:center;padding:48px 24px}
 .cl-e-ico{font-size:36px;margin-bottom:14px}
 .cl-e-title{font-family:var(--d);font-size:28px;font-weight:300;color:var(--enc);margin-bottom:8px}
 .cl-e-sub{font-size:14px;color:var(--gr);line-height:1.6}
 
-/* ── CLARIFY FLOW ── */
-.cf{padding:20px 24px}
-.cf-tc{background:#fff;border:1px solid rgba(26,23,20,.08);border-radius:18px;padding:20px;margin-bottom:24px}
-.cft-sup{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--do);margin-bottom:8px}
-.cft-txt{font-size:17px;color:var(--enc);line-height:1.4}
-.cf-prog{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:22px}
-.cf-dot{width:6px;height:6px;border-radius:50%;background:rgba(26,23,20,.15);transition:all .2s}
+/* ═══════ CLARIFY FLOW ═══════ */
+.cf-inner{padding:52px 24px 24px}
+.cf-prog{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px}
+.cf-dot{width:6px;height:6px;border-radius:50%;background:rgba(26,23,20,.15);transition:all .25s}
 .cf-dot.act{background:var(--vb);width:20px;border-radius:3px}
 .cf-dot.done{background:var(--vb)}
-.cf-sl{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gr);margin-bottom:14px}
+.cf-tc{background:#fff;border:1px solid rgba(26,23,20,.07);border-radius:18px;padding:20px;margin-bottom:24px}
+.cft-sup{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--do);margin-bottom:8px}
+.cft-txt{font-size:17px;color:var(--enc);line-height:1.45}
+.cf-lbl{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gr);margin-bottom:14px;display:block}
 .cf-nat{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
-.cf-ni{background:#fff;border:1.5px solid rgba(26,23,20,.08);border-radius:14px;padding:16px 12px;cursor:pointer;transition:all .15s;text-align:center;border:none;-webkit-appearance:none;display:block;width:100%}
+.cf-ni{background:#fff;border:1.5px solid rgba(26,23,20,.08);border-radius:14px;padding:18px 12px;cursor:pointer;transition:all .15s;text-align:center;-webkit-appearance:none;display:block;width:100%}
 .cf-ni:active{transform:scale(.96)}
-.cf-ni.sel{background:var(--enc)}
+.cf-ni.sel{background:var(--enc);border-color:var(--enc)}
 .cni-sym{font-size:22px;display:block;margin-bottom:8px}
 .cni-lbl{font-size:13px;font-weight:600;color:var(--enc);margin-bottom:3px}
 .cni-desc{font-size:11px;color:var(--gr)}
@@ -154,103 +150,101 @@ body{font-family:var(--s);background:#111;display:flex;align-items:center;justif
 .cf-ni.sel .cni-desc{color:rgba(245,240,232,.5)}
 .cf-bubbles{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
 .cf-ens{display:flex;gap:8px;margin-bottom:20px}
-.cf-en{flex:1;background:#fff;border:1.5px solid rgba(26,23,20,.08);border-radius:50px;padding:12px 8px;cursor:pointer;text-align:center;font-size:13px;font-weight:500;color:var(--enc);transition:all .15s;border:none;-webkit-appearance:none}
-.cf-en.sel{background:var(--enc);color:var(--iv)}
+.cf-en{flex:1;background:#fff;border:1.5px solid rgba(26,23,20,.08);border-radius:50px;padding:12px 8px;cursor:pointer;text-align:center;font-size:13px;font-weight:500;color:var(--enc);transition:all .15s;-webkit-appearance:none}
+.cf-en.sel{background:var(--enc);color:var(--iv);border-color:var(--enc)}
 
-/* ── MOMENT ── */
-.mw{padding:60px 24px 24px}
+/* ═══════ MOMENT ═══════ */
+.mw{padding:52px 24px 24px}
 .m-q{font-family:var(--d);font-size:36px;font-weight:300;color:var(--enc);line-height:1.2;letter-spacing:-.01em;margin-bottom:28px}
 .m-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.mc{background:#fff;border:1.5px solid rgba(26,23,20,.08);border-radius:20px;padding:22px 16px;cursor:pointer;transition:all .18s;text-align:center;border:none;-webkit-appearance:none;display:block;width:100%}
+.mc{background:#fff;border:1.5px solid rgba(26,23,20,.07);border-radius:20px;padding:22px 16px;cursor:pointer;transition:all .18s;text-align:center;-webkit-appearance:none;display:block;width:100%}
 .mc:active{transform:scale(.95)}
-.mc.sel{box-shadow:0 0 0 2px var(--enc)}
+.mc.sel{border-color:var(--enc);box-shadow:0 0 0 1px var(--enc)}
 .mc-ico{font-size:30px;display:block;margin-bottom:10px}
 .mc-name{font-size:14px;font-weight:600;color:var(--enc);margin-bottom:4px}
 .mc-sub{font-size:11px;color:var(--gr);line-height:1.4}
-.mc-fire{background:rgba(44,74,62,.06)}
-.mc-pres{background:rgba(74,55,40,.06)}
-.mc-slow{background:rgba(42,53,72,.06)}
-.mc-float{background:rgba(26,23,20,.04)}
+.mc-fire{background:rgba(44,74,62,.06)}.mc-underpressure{background:rgba(74,55,40,.06)}.mc-slow{background:rgba(42,53,72,.06)}.mc-floating{background:rgba(26,23,20,.03)}
 
-/* ── CAROUSEL ── */
-.cw{height:100%;display:flex;flex-direction:column;background:var(--iv)}
-.cw-hd{padding:52px 24px 12px;display:flex;align-items:center;justify-content:space-between}
+/* ═══════ CAROUSEL ═══════ */
+.cw-hd{flex-shrink:0;padding:52px 24px 12px;display:flex;align-items:center;justify-content:space-between}
 .cw-mood{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gr)}
 .cw-cnt{font-size:12px;color:var(--gr2)}
-.cw-msg{padding:0 24px 16px;font-family:var(--d);font-size:19px;font-weight:300;font-style:italic;color:var(--gr);line-height:1.4}
-.cw-track{flex:1;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.cc{position:absolute;width:calc(100% - 56px);max-width:330px;background:#fff;border-radius:24px;padding:26px 22px;box-shadow:0 8px 40px rgba(26,23,20,.1);border:1px solid rgba(26,23,20,.06);cursor:grab;user-select:none;will-change:transform,opacity;transition:transform .32s cubic-bezier(.4,0,.2,1),opacity .32s cubic-bezier(.4,0,.2,1)}
+.cw-msg{flex-shrink:0;padding:0 24px 12px;font-family:var(--d);font-size:19px;font-weight:300;font-style:italic;color:var(--gr);line-height:1.4}
+.cw-track{flex:1;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:0}
+.cc{position:absolute;width:calc(100% - 56px);max-width:330px;background:#fff;border-radius:24px;padding:24px 20px;box-shadow:0 8px 40px rgba(26,23,20,.1);border:1px solid rgba(26,23,20,.05);cursor:grab;user-select:none;will-change:transform,opacity;transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s cubic-bezier(.4,0,.2,1)}
 .cc.drag{cursor:grabbing;transition:none}
-.cc.prev{transform:translateX(-115%) scale(.88);opacity:.35}
-.cc.next{transform:translateX(115%) scale(.88);opacity:.35}
+.cc.prev{transform:translateX(-112%) scale(.88);opacity:.3;pointer-events:none}
+.cc.next{transform:translateX(112%) scale(.88);opacity:.3;pointer-events:none}
 .cc.main{transform:none;opacity:1;z-index:5}
-.cc.out-l{transform:translateX(-160%) scale(.82) rotate(-8deg);opacity:0}
-.cc.out-r{transform:translateX(160%) scale(.82) rotate(8deg);opacity:0}
 .cc-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.cc-sym{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px}
+.cc-sym{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px}
 .cc-nat{font-size:11px;font-weight:600;color:var(--gr);text-transform:uppercase;letter-spacing:.08em}
-.cc-txt{font-family:var(--d);font-size:21px;font-weight:400;color:var(--enc);line-height:1.35;margin-bottom:18px}
-.cc-meta{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
-.cc-tag{font-size:11px;padding:5px 12px;border-radius:50px}
-.cc-e{background:var(--iv2);color:var(--gr)}
-.cc-b{background:var(--vb);color:var(--iv)}
-.cc-mv{background:var(--iv2);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.cc-txt{font-family:var(--d);font-size:21px;font-weight:400;color:var(--enc);line-height:1.35;margin-bottom:16px}
+.cc-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.cc-tag{font-size:11px;padding:5px 11px;border-radius:50px}
+.cc-tag-e{background:var(--iv2);color:var(--gr)}
+.cc-tag-b{background:var(--vb);color:var(--iv)}
+.cc-mv{background:var(--iv2);border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between}
 .ccm-lbl{font-size:10px;color:var(--gr);margin-bottom:3px}
 .ccm-act{font-size:15px;font-weight:600;color:var(--enc)}
 .ccm-arr{color:var(--do);font-size:18px}
-.sw-rest{position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(42,53,72,.92);color:#fff;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;opacity:0;transition:opacity .15s;pointer-events:none;z-index:10}
-.sw-do{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(44,74,62,.92);color:#fff;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;opacity:0;transition:opacity .15s;pointer-events:none;z-index:10}
-.cw-btns{display:flex;align-items:center;justify-content:space-between;padding:12px 28px 4px}
+.sw-hint{position:absolute;top:50%;transform:translateY(-50%);color:#fff;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;opacity:0;transition:opacity .15s;pointer-events:none;z-index:10}
+.sw-rest{left:14px;background:rgba(42,53,72,.92)}
+.sw-do{right:14px;background:rgba(44,74,62,.92)}
+.cw-btns{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:10px 28px 4px}
 .cw-btn{width:48px;height:48px;border-radius:50%;border:1.5px solid rgba(26,23,20,.12);background:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:all .15s;-webkit-appearance:none}
-.cw-btn:active{background:var(--iv2)}
+.cw-btn:active{transform:scale(.92)}
 .cw-btn-rest{border-color:rgba(42,53,72,.25);background:rgba(42,53,72,.06)}
 .cw-btn-do{border-color:rgba(44,74,62,.3);background:rgba(44,74,62,.08)}
-.cw-dots{display:flex;justify-content:center;gap:6px;padding:12px 0 16px}
+.cw-hint-lbl{font-size:11px;color:var(--gr2);text-align:center;line-height:1.4}
+.cw-dots{flex-shrink:0;display:flex;justify-content:center;gap:6px;padding:10px 0 16px}
 .cw-dot{width:6px;height:6px;border-radius:50%;background:rgba(26,23,20,.15);transition:all .2s}
 .cw-dot.act{background:var(--vb);width:16px;border-radius:3px}
-
-/* Movement applied */
-.ma{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center;background:var(--iv)}
-.ma-ico{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:20px}
-.ma-mv{font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:var(--do);margin-bottom:10px}
-.ma-th{font-family:var(--d);font-size:26px;font-weight:300;color:var(--enc);line-height:1.3;margin-bottom:14px;max-width:280px}
-.ma-ph{font-size:14px;color:var(--gr);line-height:1.6;margin-bottom:32px;max-width:240px}
-
-/* Carousel empty / done */
 .cw-done{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center}
 .cwd-ico{font-size:40px;margin-bottom:16px}
 .cwd-title{font-family:var(--d);font-size:30px;font-weight:300;color:var(--enc);margin-bottom:10px}
 .cwd-sub{font-size:14px;color:var(--gr);line-height:1.6;margin-bottom:28px}
 
-/* ── BUBBLES ── */
+/* ═══════ MOVE APPLIED ═══════ */
+.ma-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center}
+.ma-ico{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 20px}
+.ma-mv{font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:var(--do);margin-bottom:10px}
+.ma-th{font-family:var(--d);font-size:24px;font-weight:300;color:var(--enc);line-height:1.3;margin-bottom:14px;max-width:280px}
+.ma-ph{font-size:14px;color:var(--gr);line-height:1.6;margin-bottom:32px;max-width:240px}
+.ma-actions{display:flex;flex-direction:column;gap:10px;width:100%;max-width:260px}
+
+/* ═══════ BUBBLES ═══════ */
+.bub-header{padding:52px 20px 16px}
 .bub-grid{padding:0 20px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .bub-card{border-radius:20px;overflow:hidden;cursor:pointer;transition:transform .15s;border:none;-webkit-appearance:none;display:block;width:100%;text-align:left}
 .bub-card:active{transform:scale(.96)}
-.bc-top{padding:22px 18px 14px;display:flex;flex-direction:column;gap:8px;min-height:130px}
+.bc-top{padding:22px 18px 14px;display:flex;flex-direction:column;gap:6px;min-height:130px}
 .bc-ico{font-size:26px}
 .bc-name{font-size:15px;font-weight:600;color:var(--iv)}
 .bc-cnt{font-size:11px;color:rgba(245,240,232,.55)}
-.bc-bot{background:rgba(0,0,0,.15);padding:9px 18px;display:flex;justify-content:flex-end}
-.bc-arr{color:rgba(245,240,232,.5);font-size:13px}
+.bc-bot{background:rgba(0,0,0,.12);padding:8px 16px;display:flex;justify-content:flex-end}
+.bc-arr{color:rgba(245,240,232,.45);font-size:13px}
 .bub-add{background:#fff;border:1.5px dashed rgba(26,23,20,.15);border-radius:20px;padding:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:150px;gap:8px;-webkit-appearance:none;transition:border-color .15s}
 .bub-add:active{border-color:var(--vb)}
 .ba-ico{font-size:22px;color:var(--gr2)}
 .ba-lbl{font-size:12px;color:var(--gr)}
 
-/* Bubble Detail */
-.bd{height:100%;display:flex;flex-direction:column}
-.bd-hd{padding:50px 24px 20px}
-.bd-back{font-size:22px;cursor:pointer;margin-bottom:14px;display:inline-block;-webkit-appearance:none;background:none;border:none}
+/* ═══════ BUBBLE DETAIL ═══════ */
+.bd-hd{flex-shrink:0;padding:52px 24px 16px}
+.bd-back{font-size:22px;cursor:pointer;margin-bottom:14px;display:inline-block;background:none;border:none;line-height:1;transition:opacity .15s}
+.bd-back:active{opacity:.6}
 .bd-ico{font-size:34px;display:block;margin-bottom:10px}
 .bd-name{font-family:var(--d);font-size:40px;font-weight:300;margin-bottom:4px}
 .bd-int{font-size:14px;font-style:italic;opacity:.6}
-.bd-tabs{display:flex;padding:0 24px}
-.bd-tab{padding:10px 14px;font-size:13px;font-weight:500;opacity:.5;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;background:none;border:none;border-bottom:2px solid transparent;-webkit-appearance:none}
+.bd-tabs{flex-shrink:0;display:flex;padding:0 24px}
+.bd-tab{padding:10px 14px;font-size:13px;font-weight:500;opacity:.5;cursor:pointer;border:none;border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:all .15s;background:none;-webkit-appearance:none}
 .bd-tab.act{opacity:1;border-bottom-color:var(--do)}
-.bd-body{flex:1;overflow-y:auto;background:var(--iv);padding:16px 20px}
+.bd-div{flex-shrink:0;height:1px;background:rgba(255,255,255,.15)}
+.bd-body{flex:1;overflow-y:auto;min-height:0;padding:16px 20px 24px;background:var(--iv)}
 .bd-empty{text-align:center;padding:36px 20px;color:var(--gr);font-size:14px;line-height:1.6}
 
-/* ── TRACES ── */
+/* ═══════ TRACES ═══════ */
+.traces-hd{padding:52px 20px 16px}
 .tw{padding:0 20px 24px}
 .t-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
 .t-stat{background:#fff;border:1px solid rgba(26,23,20,.07);border-radius:16px;padding:18px 16px}
@@ -261,70 +255,74 @@ body{font-family:var(--s);background:#111;display:flex;align-items:center;justif
 .big .ts-lbl{color:rgba(245,240,232,.55)}
 .t-phrase{font-family:var(--d);font-size:22px;font-weight:300;font-style:italic;color:var(--gr);text-align:center;padding:16px 24px;margin-bottom:20px;line-height:1.4}
 
-/* ── JOURNAL ── */
-.jw{padding:16px 24px 24px;height:100%;display:flex;flex-direction:column}
-.j-ref{background:rgba(26,23,20,.04);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+/* ═══════ JOURNAL ═══════ */
+.jw-inner{flex:1;display:flex;flex-direction:column;padding:52px 24px 24px;min-height:0}
+.j-ref{background:rgba(26,23,20,.04);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-shrink:0}
 .jr-sym{font-size:17px}
 .jr-txt{font-size:13px;color:var(--enc);line-height:1.4}
-.j-prompts{margin-bottom:14px}
+.j-prompts{margin-bottom:14px;flex-shrink:0}
 .jp-lbl{font-size:10px;color:var(--gr);margin-bottom:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
 .jp-item{font-size:13px;color:var(--gr);font-style:italic;padding:6px 0;border-bottom:1px solid rgba(26,23,20,.06);line-height:1.5}
 .jp-item:last-child{border-bottom:none}
-.j-ta{flex:1;min-height:150px;background:#fff;border:1.5px solid rgba(26,23,20,.1);border-radius:16px;padding:16px;font-family:var(--s);font-size:16px;color:var(--enc);resize:none;outline:none;line-height:1.6;transition:border-color .15s;-webkit-appearance:none;margin-bottom:14px}
+.j-ta{flex:1;min-height:120px;background:#fff;border:1.5px solid rgba(26,23,20,.1);border-radius:16px;padding:16px;font-family:var(--s);font-size:16px;color:var(--enc);resize:none;outline:none;line-height:1.6;transition:border-color .15s;-webkit-appearance:none;margin-bottom:14px}
 .j-ta:focus{border-color:var(--vb)}
 .j-ta::placeholder{color:var(--gr2)}
 
-/* ── RETURN SCREEN ── */
-.rw{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center}
+/* ═══════ RETURN SCREEN ═══════ */
+.rw{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center}
 .rw-word{font-family:var(--s);font-size:20px;font-weight:200;letter-spacing:.45em;color:var(--enc);margin-bottom:28px}
 .rw-title{font-family:var(--d);font-size:34px;font-weight:300;color:var(--enc);line-height:1.3;margin-bottom:10px}
 .rw-ph{font-size:14px;color:var(--gr);margin-bottom:36px;line-height:1.6}
 .rw-opts{display:flex;flex-direction:column;gap:10px;width:100%}
-.rw-opt{background:#fff;border:1px solid rgba(26,23,20,.08);border-radius:14px;padding:16px 20px;cursor:pointer;text-align:left;font-size:14px;font-weight:500;color:var(--enc);display:flex;align-items:center;justify-content:space-between;border:none;transition:background .15s;-webkit-appearance:none}
+.rw-opt{background:#fff;border:1px solid rgba(26,23,20,.08);border-radius:14px;padding:16px 20px;cursor:pointer;text-align:left;font-size:14px;font-weight:500;color:var(--enc);display:flex;align-items:center;justify-content:space-between;transition:background .15s;-webkit-appearance:none;width:100%}
 .rw-opt:active{background:var(--iv2)}
-.rw-opt-arr{color:var(--gr2);font-size:16px}
+.rw-opt-arr{color:var(--gr2);font-size:15px}
 
-/* ADD BUBBLE */
+/* ═══════ ADD BUBBLE ═══════ */
+.ab-hd{padding:52px 20px 16px}
 .ab-form{padding:0 20px 24px}
-.ab-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.ab-lbl{font-size:11px;color:var(--gr);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;display:block}
+.ab-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
 .ab-em{width:44px;height:44px;border-radius:12px;background:#fff;border:1.5px solid rgba(26,23,20,.1);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:all .15s;-webkit-appearance:none}
 .ab-em.sel{border-color:var(--vb);background:rgba(44,74,62,.08)}
-.ab-lbl{font-size:11px;color:var(--gr);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
-.ab-inp{background:#fff;border:1.5px solid rgba(26,23,20,.1);border-radius:12px;padding:14px 16px;font-size:15px;color:var(--enc);outline:none;width:100%;-webkit-appearance:none;font-family:var(--s);margin-bottom:16px}
+.ab-inp{background:#fff;border:1.5px solid rgba(26,23,20,.1);border-radius:12px;padding:14px 16px;font-size:15px;color:var(--enc);outline:none;width:100%;-webkit-appearance:none;font-family:var(--s);margin-bottom:20px;transition:border-color .15s}
 .ab-inp:focus{border-color:var(--vb)}
+.ab-inp::placeholder{color:var(--gr2)}
 .ab-colors{display:flex;gap:10px;margin-bottom:20px}
-.ab-col{width:34px;height:34px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:border-color .15s;-webkit-appearance:none}
-.ab-col.sel{border-color:var(--enc)}
+.ab-col{width:34px;height:34px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:border-color .15s,transform .15s;-webkit-appearance:none}
+.ab-col.sel{border-color:var(--enc);transform:scale(1.15)}
 
-@keyframes fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.fu{animation:fade-up .35s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.fu{animation:fadeUp .35s ease forwards}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-// ── CONSTANTS ─────────────────────────────────
+// ══════════════════════════════════════════
+// CONSTANTS
+// ══════════════════════════════════════════
 const MOODS = {
-  on_fire:        {emoji:'⚡',name:'On fire',      sub:'Énergie haute',      msg:"Tu as de l'élan. On l'utilise pour ce qui compte vraiment."},
-  under_pressure: {emoji:'🔥',name:'Sous pression', sub:'Surcharge · tension', msg:'On réduit. Une chose suffit.'},
-  slow:           {emoji:'🌿',name:'Au ralenti',    sub:'Énergie douce',      msg:'Un petit mouvement suffit.'},
-  floating:       {emoji:'🌫️',name:'En flottement', sub:'Flou · pas prête',   msg:"Rien n'a besoin de prendre forme tout de suite."},
+  on_fire:        {emoji:'⚡', name:'On fire',       sub:'Énergie haute',      cssKey:'fire',          msg:"Tu as de l'élan. On l'utilise pour ce qui compte vraiment."},
+  under_pressure: {emoji:'🔥', name:'Sous pression',  sub:'Surcharge · tension', cssKey:'underpressure', msg:'On réduit. Une chose suffit.'},
+  slow:           {emoji:'🌿', name:'Au ralenti',     sub:'Énergie douce',       cssKey:'slow',          msg:'Un petit mouvement suffit.'},
+  floating:       {emoji:'🌫️', name:'En flottement',  sub:'Flou · pas prête',    cssKey:'floating',      msg:"Rien n'a besoin de prendre forme tout de suite."},
 };
 
 const NATURES = {
-  action:   {sym:'⚡',lbl:'À faire',      desc:'Tâche / action',      mv:'do',        cls:'ba'},
-  knot:     {sym:'🌀',lbl:'Ça tourne',    desc:'Nœud / pensée récurrente', mv:'unfold',cls:'bk'},
-  idea:     {sym:'💡',lbl:'Ça germe',     desc:'Idée / intuition',    mv:'germinate', cls:'bi'},
-  reminder: {sym:'🔔',lbl:'Ne pas oublier',desc:'Rappel',             mv:'plan',      cls:'br'},
+  action:   {sym:'⚡', lbl:'À faire',        desc:'Tâche / action',            mv:'do',        cls:'ba'},
+  knot:     {sym:'🌀', lbl:'Ça tourne',      desc:'Nœud / pensée récurrente',  mv:'unfold',    cls:'bk'},
+  idea:     {sym:'💡', lbl:'Ça germe',       desc:'Idée / intuition',          mv:'germinate', cls:'bi'},
+  reminder: {sym:'🔔', lbl:'Ne pas oublier', desc:'Rappel',                    mv:'plan',      cls:'br'},
 };
 
 const MOVEMENTS = {
-  do:        {lbl:'Faire',           ico:'▶',    bg:'#2C4A3E',ph:"C'est fait. Bien joué."},
-  plan:      {lbl:'Planifier',       ico:'📅',   bg:'#2A3548',ph:"Noté. Tu ne l'oublieras pas."},
-  unfold:    {lbl:'Déplier',         ico:'🔍',   bg:'#4A3728',ph:"Espace ouvert. Laisse venir."},
-  germinate: {lbl:'Laisser germer',  ico:'🌱',   bg:'#20372D',ph:"Elle peut grandir maintenant."},
-  link:      {lbl:'Relier',          ico:'🔗',   bg:'#2C4A3E',ph:"Elle a trouvé son monde."},
-  rest:      {lbl:'Reposer',         ico:'💤',   bg:'#8A8480',ph:"Ce n'est pas oublié. C'est reposé."},
+  do:        {lbl:'Faire',          ico:'▶',  bg:'#2C4A3E', ph:"C'est fait. Bien joué."},
+  plan:      {lbl:'Planifier',      ico:'📅', bg:'#2A3548', ph:"Noté. Tu ne l'oublieras pas."},
+  unfold:    {lbl:'Déplier',        ico:'🔍', bg:'#4A3728', ph:"Espace ouvert. Laisse venir."},
+  germinate: {lbl:'Laisser germer', ico:'🌱', bg:'#20372D', ph:"Elle peut grandir maintenant."},
+  link:      {lbl:'Relier',         ico:'🔗', bg:'#2C4A3E', ph:"Elle a trouvé son monde."},
+  rest:      {lbl:'Reposer',        ico:'💤', bg:'#8A8480', ph:"Ce n'est pas oublié. C'est reposé."},
 };
 
 const BUBBLE_EMOJIS = ['🏠','💼','🌿','🎨','💰','✈️','🏡','💞','🏃','📁','🌙','🎯','📚','🌊','🎵'];
@@ -345,7 +343,9 @@ const JOURNAL_PROMPTS = {
   free:    ["Qu'est-ce qui tourne en fond ?","Qu'est-ce que je n'ai plus besoin de porter ce soir ?","Qu'est-ce qui peut attendre demain ?"],
 };
 
-// ── STATE ─────────────────────────────────────
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
 let S = {
   thoughts: [],
   bubbles: JSON.parse(JSON.stringify(DEFAULT_BUBBLES)),
@@ -358,31 +358,38 @@ let S = {
   clarifyNature: null,
   clarifyBubble: null,
   clarifyEnergy: null,
+  currentBubble: null,
   bubbleTab: 'vivant',
   addBubbleEmoji: '🏡',
   addBubbleColor: '#2A3548',
+  appliedMovement: null,
+  appliedThought: null,
+  journalThought: null,
+  journalBubble: null,
   view: 'splash',
-  prevView: null,
+  prevView: 'home',
 };
 
-// ── STORAGE ───────────────────────────────────
+// ══════════════════════════════════════════
+// STORAGE
+// ══════════════════════════════════════════
 function load() {
   try {
-    const d = JSON.parse(localStorage.getItem('flit_data') || '{}');
-    if (d.thoughts) S.thoughts = d.thoughts;
-    if (d.bubbles) S.bubbles = d.bubbles;
-    if (d.journalEntries) S.journalEntries = d.journalEntries;
-  } catch(e){}
+    const d = JSON.parse(localStorage.getItem('flit_v2') || '{}');
+    if (d.thoughts)        S.thoughts        = d.thoughts;
+    if (d.bubbles)         S.bubbles         = d.bubbles;
+    if (d.journalEntries)  S.journalEntries  = d.journalEntries;
+  } catch(e) {}
 }
 function save() {
   try {
-    localStorage.setItem('flit_data', JSON.stringify({
+    localStorage.setItem('flit_v2', JSON.stringify({
       thoughts: S.thoughts,
-      bubbles: S.bubbles,
+      bubbles:  S.bubbles,
       journalEntries: S.journalEntries,
     }));
     localStorage.setItem('flit_last', Date.now().toString());
-  } catch(e){}
+  } catch(e) {}
 }
 function shouldReturn() {
   const last = localStorage.getItem('flit_last');
@@ -390,19 +397,35 @@ function shouldReturn() {
   return (Date.now() - parseInt(last)) > 3 * 24 * 60 * 60 * 1000;
 }
 
-// ── UTILITIES ─────────────────────────────────
-const uid = () => Math.random().toString(36).slice(2);
-function getBubble(id) { return S.bubbles.find(b => b.id === id); }
-function getN(nature) { return NATURES[nature] || {sym:'·',lbl:'',desc:'',mv:'rest',cls:'bn'}; }
-function getBadgeCls(nature) { return getN(nature).cls; }
-function getSymHTML(nature) {
-  const n = getN(nature);
-  return `<div class="tc-badge ${n.cls}">${n.sym}</div>`;
+// ══════════════════════════════════════════
+// UTILITIES
+// ══════════════════════════════════════════
+const uid = () => Math.random().toString(36).slice(2, 9);
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-function thinkTag(t) {
+
+function timeSince(iso) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor(diff / 3600000);
+  if (d > 1)  return `Il y a ${d} jours`;
+  if (d === 1) return 'Hier';
+  if (h > 1)  return `Il y a ${h}h`;
+  return "À l'instant";
+}
+
+function getBubble(id) { return S.bubbles.find(b => b.id === id); }
+
+function getN(nature) {
+  return NATURES[nature] || {sym:'·', lbl:'', desc:'', mv:'rest', cls:'bn'};
+}
+
+function thinkTags(t) {
   const tags = [];
   if (t.energyRequired) {
-    const map = {soft:'Douce',normal:'Normale',intense:'Intense'};
+    const map = {soft:'Énergie douce', normal:'Énergie normale', intense:'Énergie intense'};
     tags.push(map[t.energyRequired] || t.energyRequired);
   }
   if (t.bubbleId) {
@@ -412,60 +435,93 @@ function thinkTag(t) {
   return tags;
 }
 
-// ── RECOMMENDATION MATRIX ────────────────────
-function getRecommendedThoughts(mood) {
-  const all = S.thoughts.filter(t => t.status === 'clarified');
-  const deposed = S.thoughts.filter(t => t.status === 'deposed');
-  if (mood === 'on_fire') {
-    return all.filter(t => t.energyRequired === 'normal' || t.energyRequired === 'intense').slice(0,5);
-  }
-  if (mood === 'under_pressure') {
-    return all.filter(t => t.energyRequired === 'soft' || t.nature === 'reminder').slice(0,3);
-  }
-  if (mood === 'slow') {
-    return all.filter(t => t.energyRequired === 'soft').slice(0,4);
-  }
-  if (mood === 'floating') {
-    return [...deposed, ...all.filter(t => t.nature === 'idea')].slice(0,5);
-  }
-  return all.slice(0,5);
+function thoughtCardHTML(t, onclick) {
+  const n    = getN(t.nature);
+  const tags = thinkTags(t);
+  const mv   = t.recommendedMovement ? (MOVEMENTS[t.recommendedMovement] || {}).lbl : '';
+  return `<div class="tc"${onclick ? ` onclick="${onclick}"` : ''}>
+    <div class="tc-badge ${n.cls}">${n.sym || '·'}</div>
+    <div class="tc-body">
+      <div class="tc-txt">${esc(t.text)}</div>
+      <div class="tc-meta">
+        ${tags.map(tg => `<span class="tc-tag">${esc(tg)}</span>`).join('')}
+        ${mv ? `<span class="tc-tag tc-tag-mv">${mv}</span>` : ''}
+      </div>
+    </div>
+    ${onclick ? `<span class="tc-arr">→</span>` : ''}
+  </div>`;
 }
 
-function getRecommendedMovement(t) {
-  if (!t.nature) return 'do';
-  return getN(t.nature).mv;
+function navHTML(active) {
+  const items = [
+    {v:'home',    ico:'⌂',  lbl:'Accueil'},
+    {v:'deposit', ico:'',   lbl:'Déposer', plus:true},
+    {v:'moment',  ico:'◉',  lbl:'Moment'},
+    {v:'bubbles', ico:'◯',  lbl:'Bulles'},
+    {v:'traces',  ico:'∿',  lbl:'Traces'},
+  ];
+  return `<nav class="nav">
+    ${items.map(i => i.plus ? `
+      <button class="ni-plus" onclick="go('deposit')">
+        <svg viewBox="0 0 20 20"><line x1="10" y1="2" x2="10" y2="18"/><line x1="2" y1="10" x2="18" y2="10"/></svg>
+      </button>` : `
+      <button class="ni${active === i.v ? ' act' : ''}" onclick="go('${i.v}')">
+        <span class="ico">${i.ico}</span>
+        <span class="lbl">${i.lbl}</span>
+      </button>`
+    ).join('')}
+  </nav>`;
+}
+
+// ══════════════════════════════════════════
+// RECOMMENDATION MATRIX
+// ══════════════════════════════════════════
+function getRecommendedThoughts(mood) {
+  const all     = S.thoughts.filter(t => t.status === 'clarified');
+  const deposed = S.thoughts.filter(t => t.status === 'deposed');
+  if (mood === 'on_fire')        return all.filter(t => t.energyRequired === 'normal' || t.energyRequired === 'intense').slice(0, 5);
+  if (mood === 'under_pressure') return all.filter(t => t.energyRequired === 'soft' || t.nature === 'reminder').slice(0, 3);
+  if (mood === 'slow')           return all.filter(t => t.energyRequired === 'soft').slice(0, 4);
+  if (mood === 'floating')       return [...deposed, ...all.filter(t => t.nature === 'idea')].slice(0, 5);
+  return all.slice(0, 5);
 }
 
 function seedDemo() {
   if (S.thoughts.length > 0) return;
   const demo = [
     {text:"Je me sens bloquée dans ce projet depuis des semaines", nature:'knot',   energyRequired:'intense', bubbleId:'travail',   status:'clarified'},
-    {text:"Appeler le médecin — ça traîne depuis trop longtemps",  nature:'reminder',energyRequired:'soft',    bubbleId:null,        status:'clarified'},
-    {text:"Idée : réorganiser entièrement l'espace de travail",    nature:'idea',    energyRequired:'soft',    bubbleId:'quotidien', status:'clarified'},
-    {text:"Envoyer le bilan à l'équipe avant vendredi",            nature:'action',  energyRequired:'normal',  bubbleId:'travail',   status:'clarified'},
-    {text:"Voyage à Lisbonne en septembre, à explorer",            nature:'idea',    energyRequired:'soft',    bubbleId:null,        status:'clarified'},
-    {text:"Je ne sais pas pourquoi je procrastine sur cette décision", status:'deposed'},
-    {text:"Il faudrait que je parle de ce que je ressens en ce moment", status:'deposed'},
+    {text:"Appeler le médecin — ça traîne depuis trop longtemps",  nature:'reminder',energyRequired:'soft',   bubbleId:null,        status:'clarified'},
+    {text:"Idée : réorganiser entièrement l'espace de travail",    nature:'idea',    energyRequired:'soft',   bubbleId:'quotidien', status:'clarified'},
+    {text:"Envoyer le bilan à l'équipe avant vendredi",            nature:'action',  energyRequired:'normal', bubbleId:'travail',   status:'clarified'},
+    {text:"Voyage à Lisbonne en septembre, à explorer",            nature:'idea',    energyRequired:'soft',   bubbleId:null,        status:'clarified'},
+    {text:"Je ne sais pas pourquoi je procrastine sur cette décision",             status:'deposed'},
+    {text:"Il faudrait que je parle de ce que je ressens en ce moment",            status:'deposed'},
   ];
-  S.thoughts = demo.map((d,i) => ({
-    id: (i+1).toString(),
-    createdAt: new Date(Date.now() - (demo.length-i)*86400000*0.8).toISOString(),
-    status:'deposed', nature:null, energyRequired:null, bubbleId:null,
-    recommendedMovement:null, journalEntries:[],
+  S.thoughts = demo.map((d, i) => ({
+    id: (i + 1).toString(),
+    createdAt: new Date(Date.now() - (demo.length - i) * 86400000 * 0.7).toISOString(),
+    status: 'deposed',
+    nature: null, energyRequired: null, bubbleId: null,
+    recommendedMovement: null, journalEntries: [],
     ...d,
     recommendedMovement: d.nature ? getN(d.nature).mv : null,
   }));
   save();
 }
 
-// ── NAVIGATION ────────────────────────────────
-function go(view, params={}) {
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+function go(view, params = {}) {
   S.prevView = S.view;
-  S.view = view;
+  S.view     = view;
   Object.assign(S, params);
   render();
 }
-function back() { go(S.prevView || 'home'); }
+
+function back() {
+  go(S.prevView || 'home');
+}
 
 function render() {
   const app = document.getElementById('app');
@@ -478,57 +534,34 @@ function render() {
     moment, carousel, move_applied, bubbles, bubble_detail,
     traces, journal, return_screen, add_bubble,
   };
-
   div.innerHTML = (views[S.view] || home)();
   app.appendChild(div);
 
+  // setTimeout is more reliable than double-rAF
   setTimeout(() => {
     div.classList.add('vis');
-    if (old) { old.classList.add('out'); setTimeout(()=>old.remove(), 220); }
+    if (old) {
+      old.classList.add('out');
+      setTimeout(() => old.remove(), 220);
+    }
   }, 20);
 
   afterRender();
 }
 
 function afterRender() {
-  if (S.view === 'splash') {
-    initSplashAnim();
-    setTimeout(()=> go(shouldReturn() ? 'return_screen' : 'home'), 2800);
-  }
-  if (S.view === 'carousel') {
-    initCarousel();
-  }
-  if (S.view === 'deposit') {
-    const ta = document.getElementById('d-ta');
-    if (ta) setTimeout(()=>ta.focus(), 350);
-  }
+  if (S.view === 'splash')   { initSplashAnim(); setTimeout(() => go(shouldReturn() ? 'return_screen' : 'home'), 2800); }
+  if (S.view === 'carousel') { initCarousel(); }
+  if (S.view === 'deposit')  { const ta = document.getElementById('d-ta'); if (ta) setTimeout(() => ta.focus(), 350); }
 }
 
-// ── NAV HTML ─────────────────────────────────
-function navHTML(active) {
-  const items = [
-    {v:'home',     ico:'⌂',  lbl:'Accueil'},
-    {v:'plus',     ico:'',   lbl:'Déposer', plus:true},
-    {v:'moment',   ico:'◉',  lbl:'Moment'},
-    {v:'bubbles',  ico:'◯',  lbl:'Bulles'},
-    {v:'traces',   ico:'∿',  lbl:'Traces'},
-  ];
-  return `<div class="nav">${items.map(i => i.plus ? `
-    <button class="ni-plus" onclick="go('deposit')">
-      <svg viewBox="0 0 22 22"><line x1="11" y1="3" x2="11" y2="19"/><line x1="3" y1="11" x2="19" y2="11"/></svg>
-    </button>` : `
-    <button class="ni${active===i.v?' act':''}" onclick="go('${i.v}')">
-      <span class="ico">${i.ico}</span>
-      <span class="lbl">${i.lbl}</span>
-    </button>`
-  ).join('')}</div>`;
-}
-
-// ── VIEW: SPLASH ──────────────────────────────
+// ══════════════════════════════════════════
+// VIEW: SPLASH
+// ══════════════════════════════════════════
 function splash() {
   return `<div class="splash">
-    <div style="margin-bottom:32px">
-      <svg id="sp-svg" width="240" height="110" viewBox="0 0 240 110" fill="none">
+    <div style="margin-bottom:24px">
+      <svg id="sp-svg" width="220" height="100" viewBox="0 0 240 110" fill="none">
         <path id="sp-knot"
           d="M 96 55 C 98 34,118 22,131 40 C 144 58,129 82,108 78 C 87 74,72 54,84 38 C 96 22,122 30,116 52 C 110 74,86 78,75 61 C 64 44,81 27,104 37 C 127 47,124 75,102 80 C 80 85,62 65,72 48 C 82 31,110 36,104 57 L 228 57"
           stroke="#1A1714" stroke-width="1.2" stroke-linecap="round" fill="none"/>
@@ -548,42 +581,43 @@ function initSplashAnim() {
   if (!knot || !line) return;
   const kl = knot.getTotalLength();
   const ll = line.getTotalLength();
-  knot.style.strokeDasharray = kl;
+  knot.style.strokeDasharray  = kl;
   knot.style.strokeDashoffset = kl;
-  line.style.strokeDasharray = ll;
+  line.style.strokeDasharray  = ll;
   line.style.strokeDashoffset = ll;
-  // Draw knot
   setTimeout(() => {
     knot.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)';
     knot.style.strokeDashoffset = 0;
   }, 200);
-  // Unravel
   setTimeout(() => {
-    knot.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1),opacity .4s ease .8s';
+    knot.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1), opacity .4s ease .8s';
     knot.style.strokeDashoffset = -kl;
     knot.style.opacity = 0;
     line.style.opacity = 1;
-    line.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1),opacity .15s ease';
+    line.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)';
     line.style.strokeDashoffset = 0;
   }, 1800);
 }
 
-// ── VIEW: HOME ────────────────────────────────
+// ══════════════════════════════════════════
+// VIEW: HOME
+// ══════════════════════════════════════════
 function home() {
-  const deposed = S.thoughts.filter(t => t.status === 'deposed');
+  const deposed   = S.thoughts.filter(t => t.status === 'deposed');
   const clarified = S.thoughts.filter(t => t.status === 'clarified');
-  const recent = S.thoughts.filter(t => t.status === 'clarified').slice(0,3);
+  const recent    = clarified.slice(0, 3);
 
-  return `<div class="sa">
+  return `
+  <div class="sa">
     <div class="hw">
       <div class="h-logo">
-        <svg width="24" height="16" viewBox="0 0 240 110" fill="none">
-          <path d="M 96 55 C 98 34,118 22,131 40 C 144 58,129 82,108 78 C 87 74,72 54,84 38 C 96 22,122 30,116 52 C 110 74,86 78,75 61 L 228 57" stroke="#1A1714" stroke-width="7" stroke-linecap="round" fill="none"/>
+        <svg width="22" height="14" viewBox="0 0 240 110" fill="none">
+          <path d="M 96 55 C 98 34,118 22,131 40 C 144 58,129 82,108 78 C 87 74,72 54,84 38 C 96 22,122 30,116 52 L 228 57" stroke="#1A1714" stroke-width="7" stroke-linecap="round" fill="none"/>
         </svg>
         <span class="h-logo-txt">FLIT</span>
       </div>
 
-      <div class="h-q">Qu'est-ce qui prend de la place ?</div>
+      <div class="h-q">Qu'est-ce qui<br>prend de la place ?</div>
 
       <div class="h-bar" onclick="go('deposit')">
         <span class="h-bar-ph">Dépose ce qui tourne en fond…</span>
@@ -593,15 +627,15 @@ function home() {
       ${deposed.length > 0 ? `
       <div class="h-notice" onclick="go('clarify_list')">
         <div class="hn-sup">À clarifier · ${deposed.length}</div>
-        <div class="hn-txt">${deposed.length} pensée${deposed.length>1?'s':''} déposée${deposed.length>1?'s':''} attend${deposed.length>1?'ent':''} d'être clarifiée${deposed.length>1?'s':''}.</div>
+        <div class="hn-txt">${deposed.length} pensée${deposed.length > 1 ? 's' : ''} attend${deposed.length > 1 ? 'ent' : ''} d'être clarifiée${deposed.length > 1 ? 's' : ''}.</div>
       </div>` : ''}
 
-      <div class="h-grid" style="margin-bottom:24px">
-        <button class="h-act hap" onclick="go('moment')">
-          <span class="ha-ico">◉</span>
+      <div class="h-grid">
+        <button class="h-act-p" onclick="go('moment')">
+          <span class="hap-ico">◉</span>
           <div class="hap-body">
-            <div class="ha-name">Moment FLIT</div>
-            <div class="ha-sub">Choisis ton mood · avance</div>
+            <div class="hap-name">Moment FLIT</div>
+            <div class="hap-sub">Choisis ton mood · avance</div>
           </div>
           <span class="hap-arr">→</span>
         </button>
@@ -618,9 +652,9 @@ function home() {
       </div>
 
       ${recent.length > 0 ? `
-      <div class="h-sec" style="margin-bottom:10px">Pensées clarifiées</div>
+      <div class="h-sec">Pensées clarifiées</div>
       <div class="h-thoughts">
-        ${recent.map(t => thoughtCardHTML(t, `openThought('${t.id}')`)).join('')}
+        ${recent.map(t => thoughtCardHTML(t, `go('journal',{journalThought:'${t.id}'})`)).join('')}
       </div>` : ''}
 
       <div style="height:8px"></div>
@@ -629,29 +663,30 @@ function home() {
   ${navHTML('home')}`;
 }
 
-// ── VIEW: DEPOSIT ─────────────────────────────
+// ══════════════════════════════════════════
+// VIEW: DEPOSIT
+// ══════════════════════════════════════════
 function deposit() {
-  return `<div class="sa full">
-    <div class="dw">
-      <button class="back-btn" onclick="go('home')">←</button>
-      <div class="d-q">Qu'est-ce qui prend de la place ?</div>
-      <div class="d-hint">Rien n'a besoin d'être clair. Dépose, c'est tout.</div>
-      <textarea id="d-ta" class="d-ta" placeholder="Je pense à… Il faudrait que… Je me sens…" maxlength="400" oninput="updateDepositCount()"></textarea>
-      <div class="d-bot">
-        <div class="d-cnt"><span id="d-cnt">0</span> / 400</div>
-        <button class="btn btn-p" onclick="submitDeposit()">Déposer</button>
-      </div>
-    </div>
-    <div class="d-succ" id="d-succ">
-      <div class="ds-check">✓</div>
-      <div class="ds-word">Déposé.</div>
-      <div class="ds-ph">Tu peux le clarifier plus tard.<br>Ou le laisser reposer ici.</div>
-    </div>
+  return `
+  <div class="dep-inner">
+    <button class="back" onclick="go('home')">←</button>
+    <div class="d-q">Qu'est-ce qui<br>prend de la place ?</div>
+    <div class="d-hint">Rien n'a besoin d'être clair.<br>Dépose, c'est tout.</div>
+    <textarea id="d-ta" class="d-ta" placeholder="Je pense à… Il faudrait que… Je me sens… Ça tourne dans ma tête…" maxlength="400" oninput="updateDepCount()"></textarea>
+  </div>
+  <div class="d-bot">
+    <div class="d-cnt"><span id="d-cnt">0</span> / 400</div>
+    <button class="btn btn-p" onclick="submitDeposit()">Déposer</button>
+  </div>
+  <div class="d-succ" id="d-succ">
+    <div class="ds-check">✓</div>
+    <div class="ds-word">Déposé.</div>
+    <div class="ds-ph">Tu peux le clarifier plus tard.<br>Ou le laisser reposer ici.</div>
   </div>`;
 }
 
-function updateDepositCount() {
-  const ta = document.getElementById('d-ta');
+function updateDepCount() {
+  const ta  = document.getElementById('d-ta');
   const cnt = document.getElementById('d-cnt');
   if (ta && cnt) cnt.textContent = ta.value.length;
 }
@@ -665,102 +700,108 @@ function submitDeposit() {
     createdAt: new Date().toISOString(),
     status: 'deposed',
     nature: null, energyRequired: null, bubbleId: null,
-    recommendedMovement: null, journalEntries: [],
+    recommendedMovement: null,
   });
   save();
   const succ = document.getElementById('d-succ');
-  if (succ) { succ.classList.add('show'); }
+  if (succ) succ.classList.add('show');
   setTimeout(() => go('home'), 2000);
 }
 
-// ── VIEW: CLARIFY LIST ────────────────────────
+// ══════════════════════════════════════════
+// VIEW: CLARIFY LIST
+// ══════════════════════════════════════════
 function clarify_list() {
   const deposed = S.thoughts.filter(t => t.status === 'deposed');
-  return `<div class="sa">
-    <div style="padding:52px 20px 16px">
-      <button class="back-btn" onclick="go('home')">←</button>
+  return `
+  <div class="sa">
+    <div class="cl-header">
+      <button class="back" onclick="go('home')">←</button>
       <span class="sup">Clarifier</span>
       <div style="font-family:var(--d);font-size:36px;font-weight:300;color:var(--enc);line-height:1.1;letter-spacing:-.01em;margin-bottom:6px">Ce qui attend<br>d'être compris.</div>
-      <div style="font-size:14px;color:var(--gr);margin-bottom:24px">Choisis une pensée pour lui donner une forme.</div>
+      <div style="font-size:14px;color:var(--gr);margin-bottom:4px">Choisis une pensée pour lui donner une forme.</div>
     </div>
     <div class="cl-list">
-      ${deposed.length === 0 ? `
-        <div class="cl-empty">
-          <div class="cl-e-ico">✦</div>
-          <div class="cl-e-title">Tout est clair</div>
-          <div class="cl-e-sub">Toutes tes pensées ont été clarifiées.<br>Tu peux en déposer de nouvelles.</div>
-          <button class="btn btn-p" style="margin-top:20px;max-width:200px" onclick="go('deposit')">+ Déposer</button>
-        </div>` :
-        deposed.map(t => `
-        <div class="tc" onclick="startClarify('${t.id}')">
-          <div class="tc-badge bn">·</div>
-          <div class="tc-body">
-            <div class="tc-txt">${esc(t.text)}</div>
-            <div class="tc-meta"><span class="tc-tag">${timeSince(t.createdAt)}</span></div>
-          </div>
-          <span class="tc-arr">→</span>
-        </div>`).join('')
+      ${deposed.length === 0
+        ? `<div class="cl-empty">
+            <div class="cl-e-ico">✦</div>
+            <div class="cl-e-title">Tout est clair</div>
+            <div class="cl-e-sub">Toutes tes pensées ont été clarifiées.<br>Tu peux en déposer de nouvelles.</div>
+            <button class="btn btn-p" style="margin-top:20px;max-width:200px" onclick="go('deposit')">+ Déposer</button>
+          </div>`
+        : deposed.map(t => `
+          <div class="tc" onclick="startClarify('${t.id}')">
+            <div class="tc-badge bn">·</div>
+            <div class="tc-body">
+              <div class="tc-txt">${esc(t.text)}</div>
+              <div class="tc-meta"><span class="tc-tag">${timeSince(t.createdAt)}</span></div>
+            </div>
+            <span class="tc-arr">→</span>
+          </div>`).join('')
       }
     </div>
-    <div style="height:20px"></div>
+    <div style="height:24px"></div>
   </div>
   ${navHTML('clarify_list')}`;
 }
 
 function startClarify(id) {
-  S.clarifyT = S.thoughts.find(t => t.id === id);
-  S.clarifyStep = 1;
+  S.clarifyT      = S.thoughts.find(t => t.id === id);
+  S.clarifyStep   = 1;
   S.clarifyNature = null;
   S.clarifyBubble = null;
   S.clarifyEnergy = null;
   go('clarify_flow');
 }
 
-// ── VIEW: CLARIFY FLOW ────────────────────────
+// ══════════════════════════════════════════
+// VIEW: CLARIFY FLOW
+// ══════════════════════════════════════════
 function clarify_flow() {
   const t = S.clarifyT;
   if (!t) return clarify_list();
 
-  function dots() {
-    return [1,2,3].map(i => `<div class="cf-dot${S.clarifyStep>i?' done':S.clarifyStep===i?' act':''}"></div>`).join('');
-  }
+  const dots = [1, 2, 3].map(i =>
+    `<div class="cf-dot${S.clarifyStep > i ? ' done' : S.clarifyStep === i ? ' act' : ''}"></div>`
+  ).join('');
 
   let stepHTML = '';
   if (S.clarifyStep === 1) {
     stepHTML = `
-      <div class="cf-sl">Qu'est-ce que c'est ?</div>
+      <span class="cf-lbl">Qu'est-ce que c'est ?</span>
       <div class="cf-nat">
-        ${Object.entries(NATURES).map(([k,n]) => `
-          <button class="cf-ni${S.clarifyNature===k?' sel':''}" onclick="pickNature('${k}')">
+        ${Object.entries(NATURES).map(([k, n]) => `
+          <button class="cf-ni${S.clarifyNature === k ? ' sel' : ''}" onclick="pickNature('${k}')">
             <span class="cni-sym">${n.sym}</span>
             <div class="cni-lbl">${n.lbl}</div>
             <div class="cni-desc">${n.desc}</div>
           </button>`).join('')}
       </div>
-      <button class="btn btn-p${!S.clarifyNature?' btn-s':''}" onclick="clarifyNext()"${!S.clarifyNature?' disabled':''}>Continuer →</button>`;
+      <button class="btn btn-p" onclick="clarifyNext()" ${!S.clarifyNature ? 'disabled' : ''}>Continuer →</button>`;
   } else if (S.clarifyStep === 2) {
     stepHTML = `
-      <div class="cf-sl">Où ça vit ? (optionnel)</div>
+      <span class="cf-lbl">Où ça vit ? <span style="font-weight:400;opacity:.5">(optionnel)</span></span>
       <div class="cf-bubbles">
-        <button class="pill${!S.clarifyBubble?' pill-a':'pill-l'}" onclick="pickBubble(null)">Aucune bulle</button>
+        <button class="pill ${!S.clarifyBubble ? 'pill-a' : 'pill-l'}" onclick="pickBubble(null)">Aucune bulle</button>
         ${S.bubbles.map(b => `
-          <button class="pill${S.clarifyBubble===b.id?' pill-g':'pill-l'}" onclick="pickBubble('${b.id}')">${b.emoji} ${b.name}</button>`).join('')}
+          <button class="pill ${S.clarifyBubble === b.id ? 'pill-g' : 'pill-l'}" onclick="pickBubble('${b.id}')">${b.emoji} ${esc(b.name)}</button>`).join('')}
       </div>
       <button class="btn btn-p" onclick="clarifyNext()">Continuer →</button>`;
   } else {
     stepHTML = `
-      <div class="cf-sl">Quelle énergie ça demande ?</div>
+      <span class="cf-lbl">Quelle énergie ça demande ?</span>
       <div class="cf-ens">
-        ${[['soft','Douce'],['normal','Normale'],['intense','Intense']].map(([k,l]) => `
-          <button class="cf-en${S.clarifyEnergy===k?' sel':''}" onclick="pickEnergy('${k}')">${l}</button>`).join('')}
+        ${[['soft','Douce'],['normal','Normale'],['intense','Intense']].map(([k, l]) => `
+          <button class="cf-en${S.clarifyEnergy === k ? ' sel' : ''}" onclick="pickEnergy('${k}')">${l}</button>`).join('')}
       </div>
-      <button class="btn btn-g${!S.clarifyEnergy?' btn-s':''}" onclick="finishClarify()"${!S.clarifyEnergy?' disabled':''}>C'est assez clair.</button>`;
+      <button class="btn btn-g" onclick="finishClarify()" ${!S.clarifyEnergy ? 'disabled' : ''}>C'est assez clair.</button>`;
   }
 
-  return `<div class="sa full">
-    <div class="cf">
-      <button class="back-btn" onclick="go('clarify_list')">←</button>
-      <div class="cf-prog">${dots()}</div>
+  return `
+  <div class="sa">
+    <div class="cf-inner">
+      <button class="back" onclick="go('clarify_list')">←</button>
+      <div class="cf-prog">${dots}</div>
       <div class="cf-tc">
         <div class="cft-sup">Pensée déposée</div>
         <div class="cft-txt">${esc(t.text)}</div>
@@ -770,30 +811,25 @@ function clarify_flow() {
   </div>`;
 }
 
-function pickNature(n) { S.clarifyNature = n; render(); }
-function pickBubble(b) { S.clarifyBubble = b; render(); }
-function pickEnergy(e) { S.clarifyEnergy = e; render(); }
-
-function clarifyNext() {
-  S.clarifyStep++;
-  render();
-}
+function pickNature(n)  { S.clarifyNature = n; render(); }
+function pickBubble(b)  { S.clarifyBubble = b; render(); }
+function pickEnergy(e)  { S.clarifyEnergy = e; render(); }
+function clarifyNext()  { S.clarifyStep++; render(); }
 
 function finishClarify() {
   const t = S.thoughts.find(x => x.id === S.clarifyT.id);
   if (t) {
-    t.nature = S.clarifyNature;
-    t.energyRequired = S.clarifyEnergy;
-    t.bubbleId = S.clarifyBubble;
-    t.status = 'clarified';
+    t.nature              = S.clarifyNature;
+    t.energyRequired      = S.clarifyEnergy;
+    t.bubbleId            = S.clarifyBubble;
+    t.status              = 'clarified';
     t.recommendedMovement = getN(S.clarifyNature).mv;
   }
   save();
-  // Check if more to clarify
   const next = S.thoughts.find(x => x.status === 'deposed');
   if (next) {
-    S.clarifyT = next;
-    S.clarifyStep = 1;
+    S.clarifyT      = next;
+    S.clarifyStep   = 1;
     S.clarifyNature = null;
     S.clarifyBubble = null;
     S.clarifyEnergy = null;
@@ -803,68 +839,75 @@ function finishClarify() {
   }
 }
 
-// ── VIEW: MOMENT ──────────────────────────────
+// ══════════════════════════════════════════
+// VIEW: MOMENT
+// ══════════════════════════════════════════
 function moment() {
-  return `<div class="sa">
+  return `
+  <div class="sa">
     <div class="mw">
-      <button class="back-btn" onclick="go('home')">←</button>
+      <button class="back" onclick="go('home')">←</button>
       <div class="m-q">Comment tu arrives<br>maintenant ?</div>
       <div class="m-grid">
-        ${Object.entries(MOODS).map(([k,m]) => `
-          <button class="mc mc-${k.replace('_','')}${S.mood===k?' sel':''}" onclick="selectMood('${k}')">
+        ${Object.entries(MOODS).map(([k, m]) => `
+          <button class="mc mc-${m.cssKey}${S.mood === k ? ' sel' : ''}" onclick="selectMood('${k}')">
             <span class="mc-ico">${m.emoji}</span>
             <div class="mc-name">${m.name}</div>
             <div class="mc-sub">${m.sub}</div>
           </button>`).join('')}
       </div>
-      ${S.mood ? `<button class="btn btn-g" style="margin-top:20px" onclick="startCarousel()">Voir mes pensées →</button>` : ''}
+      ${S.mood ? `<div class="m-cta"><button class="btn btn-g" onclick="startCarousel()">Voir mes pensées →</button></div>` : ''}
     </div>
   </div>
   ${navHTML('moment')}`;
 }
 
-function selectMood(k) {
-  S.mood = k;
-  render();
-}
+function selectMood(k) { S.mood = k; render(); }
 
 function startCarousel() {
-  S.carouselQ = getRecommendedThoughts(S.mood);
+  S.carouselQ   = getRecommendedThoughts(S.mood);
   S.carouselIdx = 0;
   go('carousel');
 }
 
-// ── VIEW: CAROUSEL ────────────────────────────
+// ══════════════════════════════════════════
+// VIEW: CAROUSEL
+// ══════════════════════════════════════════
 function carousel() {
-  const q = S.carouselQ;
-  const idx = S.carouselIdx;
+  const q    = S.carouselQ;
+  const idx  = S.carouselIdx;
   const mood = MOODS[S.mood] || MOODS.slow;
 
   if (q.length === 0) {
-    const deposed = S.thoughts.filter(t => t.status === 'deposed');
-    return `<div class="cw">
-      <div class="cw-hd">
-        <button class="back-btn" style="margin-bottom:0" onclick="go('moment')">←</button>
-        <span class="cw-cnt">${mood.emoji} ${mood.name}</span>
-      </div>
-      <div class="cw-done">
-        <div class="cwd-ico">✦</div>
-        <div class="cwd-title">Rien à porter</div>
-        <div class="cwd-sub">${deposed.length > 0 ? `Tu as ${deposed.length} pensée${deposed.length>1?'s':''} non clarifiée${deposed.length>1?'s':''}. Tu veux les clarifier ?` : "Toutes tes pensées ont trouvé leur place. Tu peux en déposer de nouvelles."}</div>
-        ${deposed.length > 0 ? `<button class="btn btn-p" style="max-width:220px" onclick="go('clarify_list')">Clarifier →</button>` : `<button class="btn btn-s" style="max-width:220px" onclick="go('deposit')">+ Déposer</button>`}
-      </div>
+    const dep = S.thoughts.filter(t => t.status === 'deposed');
+    return `
+    <div class="cw-hd">
+      <button class="back" style="margin-bottom:0" onclick="go('moment')">←</button>
+      <span style="font-size:13px;color:var(--gr)">${mood.emoji} ${mood.name}</span>
+    </div>
+    <div class="cw-done">
+      <div class="cwd-ico">✦</div>
+      <div class="cwd-title">Rien à porter</div>
+      <div class="cwd-sub">${dep.length > 0
+        ? `${dep.length} pensée${dep.length > 1 ? 's' : ''} non clarifiée${dep.length > 1 ? 's' : ''}. Tu veux les clarifier ?`
+        : 'Toutes tes pensées ont trouvé leur place.'}</div>
+      ${dep.length > 0
+        ? `<button class="btn btn-p" style="max-width:220px" onclick="go('clarify_list')">Clarifier →</button>`
+        : `<button class="btn btn-s" style="max-width:220px" onclick="go('deposit')">+ Déposer</button>`}
     </div>`;
   }
 
-  const t = q[idx];
-  const n = getN(t.nature);
-  const mv = MOVEMENTS[t.recommendedMovement || n.mv] || MOVEMENTS.do;
+  const t      = q[idx];
+  const n      = getN(t.nature);
+  const mv     = MOVEMENTS[t.recommendedMovement || n.mv] || MOVEMENTS.do;
   const bubble = t.bubbleId ? getBubble(t.bubbleId) : null;
+  const prev   = q[idx - 1];
+  const next   = q[idx + 1];
 
-  function cardHTML(t2, cls) {
+  function miniCard(t2, cls) {
     if (!t2) return '';
     const n2 = getN(t2.nature);
-    return `<div class="cc ${cls}" style="pointer-events:${cls==='main'?'auto':'none'}">
+    return `<div class="cc ${cls}">
       <div class="cc-hdr">
         <div class="cc-sym ${n2.cls}">${n2.sym}</div>
         <span class="cc-nat">${n2.lbl}</span>
@@ -873,52 +916,43 @@ function carousel() {
     </div>`;
   }
 
-  const prev = q[idx-1];
-  const next = q[idx+1];
-
-  const dotsHTML = q.map((_,i)=>`<div class="cw-dot${i===idx?' act':''}"></div>`).join('');
-
-  return `<div class="cw">
-    <div class="cw-hd">
-      <button class="back-btn" style="margin-bottom:0" onclick="go('moment')">←</button>
-      <div class="cw-mood"><span>${mood.emoji}</span><span>${mood.name}</span></div>
-      <span class="cw-cnt">${idx+1} / ${q.length}</span>
-    </div>
-    <div class="cw-msg">${mood.msg}</div>
-
-    <div class="cw-track">
-      <div class="sw-rest" id="sw-rest">Reposer</div>
-      <div class="sw-do"   id="sw-do">${mv.lbl}</div>
-
-      ${prev ? cardHTML(prev,'prev') : ''}
-      <div class="cc main" id="cc-main">
-        <div class="cc-hdr">
-          <div class="cc-sym ${n.cls}">${n.sym}</div>
-          <span class="cc-nat">${n.lbl}</span>
-        </div>
-        <div class="cc-txt">${esc(t.text)}</div>
-        <div class="cc-meta">
-          ${t.energyRequired ? `<span class="cc-tag cc-e">${{soft:'Douce',normal:'Normale',intense:'Intense'}[t.energyRequired]}</span>` : ''}
-          ${bubble ? `<span class="cc-tag cc-b">${bubble.emoji} ${bubble.name}</span>` : ''}
-        </div>
-        <div class="cc-mv">
-          <div>
-            <div class="ccm-lbl">Mouvement recommandé</div>
-            <div class="ccm-act">${mv.ico} ${mv.lbl}</div>
-          </div>
-          <span class="ccm-arr">→</span>
-        </div>
+  return `
+  <div class="cw-hd">
+    <button class="back" style="margin-bottom:0" onclick="go('moment')">←</button>
+    <div class="cw-mood"><span>${mood.emoji}</span><span>${mood.name}</span></div>
+    <span class="cw-cnt">${idx + 1} / ${q.length}</span>
+  </div>
+  <div class="cw-msg">${mood.msg}</div>
+  <div class="cw-track">
+    <div class="sw-hint sw-rest" id="sw-rest">💤 Reposer</div>
+    <div class="sw-hint sw-do"   id="sw-do">${mv.ico} ${mv.lbl}</div>
+    ${miniCard(prev, 'prev')}
+    <div class="cc main" id="cc-main">
+      <div class="cc-hdr">
+        <div class="cc-sym ${n.cls}">${n.sym}</div>
+        <span class="cc-nat">${n.lbl}</span>
       </div>
-      ${next ? cardHTML(next,'next') : ''}
+      <div class="cc-txt">${esc(t.text)}</div>
+      <div class="cc-meta">
+        ${t.energyRequired ? `<span class="cc-tag cc-tag-e">${{soft:'Douce',normal:'Normale',intense:'Intense'}[t.energyRequired]}</span>` : ''}
+        ${bubble ? `<span class="cc-tag cc-tag-b">${bubble.emoji} ${esc(bubble.name)}</span>` : ''}
+      </div>
+      <div class="cc-mv">
+        <div>
+          <div class="ccm-lbl">Mouvement recommandé</div>
+          <div class="ccm-act">${mv.ico} ${mv.lbl}</div>
+        </div>
+        <span class="ccm-arr">→</span>
+      </div>
     </div>
-
-    <div class="cw-btns">
-      <button class="cw-btn cw-btn-rest" onclick="applyMovement('rest')" title="Reposer">💤</button>
-      <div style="font-size:11px;color:var(--gr2);text-align:center">← Reposer · ${mv.lbl} →</div>
-      <button class="cw-btn cw-btn-do"   onclick="applyMovement('${t.recommendedMovement||n.mv}')" title="${mv.lbl}">${mv.ico}</button>
-    </div>
-    <div class="cw-dots">${dotsHTML}</div>
-  </div>`;
+    ${miniCard(next, 'next')}
+  </div>
+  <div class="cw-btns">
+    <button class="cw-btn cw-btn-rest" onclick="applyMovement('rest')" title="Reposer">💤</button>
+    <div class="cw-hint-lbl">← Reposer<br>${mv.lbl} →</div>
+    <button class="cw-btn cw-btn-do" onclick="applyMovement('${t.recommendedMovement || n.mv}')" title="${mv.lbl}">${mv.ico}</button>
+  </div>
+  <div class="cw-dots">${q.map((_, i) => `<div class="cw-dot${i === idx ? ' act' : ''}"></div>`).join('')}</div>`;
 }
 
 function applyMovement(mvKey) {
@@ -926,12 +960,12 @@ function applyMovement(mvKey) {
   if (!t) return;
   const thought = S.thoughts.find(x => x.id === t.id);
   if (thought) {
-    thought.status = mvKey === 'rest' ? 'rested' : 'in_motion';
+    thought.status              = mvKey === 'rest' ? 'rested' : 'in_motion';
     thought.recommendedMovement = mvKey;
     save();
   }
   S.appliedMovement = mvKey;
-  S.appliedThought = t;
+  S.appliedThought  = t;
   go('move_applied');
 }
 
@@ -944,77 +978,79 @@ function initCarousel() {
   function onMove(x) {
     if (!dragging) return;
     offset = x - startX;
-    card.style.transform = `translateX(${offset}px) rotate(${offset*.025}deg)`;
+    card.style.transform = `translateX(${offset}px) rotate(${offset * .024}deg)`;
     const ri = document.getElementById('sw-rest');
     const di = document.getElementById('sw-do');
     if (offset < -40) {
-      if(ri) ri.style.opacity = Math.min(1, Math.abs(offset)/80);
-      if(di) di.style.opacity = 0;
+      if (ri) ri.style.opacity = Math.min(1, Math.abs(offset) / 80);
+      if (di) di.style.opacity = 0;
     } else if (offset > 40) {
-      if(di) di.style.opacity = Math.min(1, offset/80);
-      if(ri) ri.style.opacity = 0;
+      if (di) di.style.opacity = Math.min(1, offset / 80);
+      if (ri) ri.style.opacity = 0;
     } else {
-      if(ri) ri.style.opacity = 0;
-      if(di) di.style.opacity = 0;
+      if (ri) ri.style.opacity = 0;
+      if (di) di.style.opacity = 0;
     }
   }
   function onEnd() {
     if (!dragging) return;
     dragging = false;
     card.classList.remove('drag');
-    const t = S.carouselQ[S.carouselIdx];
-    const n = getN(t ? t.nature : null);
+    const t  = S.carouselQ[S.carouselIdx];
+    const n  = getN(t ? t.nature : null);
+    const ri = document.getElementById('sw-rest');
+    const di = document.getElementById('sw-do');
     if (offset < -80) {
-      card.style.transition = 'all .35s cubic-bezier(.4,0,.2,1)';
-      card.style.transform = 'translateX(-160%) rotate(-10deg)';
-      card.style.opacity = '0';
-      setTimeout(() => applyMovement('rest'), 340);
+      card.style.transition = 'all .32s cubic-bezier(.4,0,.2,1)';
+      card.style.transform  = 'translateX(-170%) rotate(-10deg)';
+      card.style.opacity    = '0';
+      setTimeout(() => applyMovement('rest'), 320);
     } else if (offset > 80) {
-      card.style.transition = 'all .35s cubic-bezier(.4,0,.2,1)';
-      card.style.transform = 'translateX(160%) rotate(10deg)';
-      card.style.opacity = '0';
-      setTimeout(() => applyMovement(t ? (t.recommendedMovement||n.mv) : 'do'), 340);
+      card.style.transition = 'all .32s cubic-bezier(.4,0,.2,1)';
+      card.style.transform  = 'translateX(170%) rotate(10deg)';
+      card.style.opacity    = '0';
+      setTimeout(() => applyMovement(t ? (t.recommendedMovement || n.mv) : 'do'), 320);
     } else {
       card.style.transition = 'transform .3s cubic-bezier(.4,0,.2,1)';
-      card.style.transform = '';
-      const ri = document.getElementById('sw-rest');
-      const di = document.getElementById('sw-do');
-      if(ri) ri.style.opacity = 0;
-      if(di) di.style.opacity = 0;
+      card.style.transform  = '';
+      if (ri) ri.style.opacity = 0;
+      if (di) di.style.opacity = 0;
     }
     offset = 0; startX = null;
   }
 
-  card.addEventListener('touchstart', e => onStart(e.touches[0].clientX), {passive:true});
-  card.addEventListener('touchmove',  e => { e.preventDefault(); onMove(e.touches[0].clientX); }, {passive:false});
+  card.addEventListener('touchstart', e => onStart(e.touches[0].clientX), {passive: true});
+  card.addEventListener('touchmove',  e => { e.preventDefault(); onMove(e.touches[0].clientX); }, {passive: false});
   card.addEventListener('touchend',   onEnd);
-  card.addEventListener('mousedown',  e => onStart(e.clientX));
-  window.addEventListener('mousemove', e => { if(dragging) onMove(e.clientX); });
+  card.addEventListener('mousedown',  e => { e.preventDefault(); onStart(e.clientX); });
+  window.addEventListener('mousemove', e => { if (dragging) onMove(e.clientX); });
   window.addEventListener('mouseup',   onEnd);
 }
 
-// ── VIEW: MOVEMENT APPLIED ────────────────────
+// ══════════════════════════════════════════
+// VIEW: MOVE APPLIED
+// ══════════════════════════════════════════
 function move_applied() {
-  const mv = MOVEMENTS[S.appliedMovement] || MOVEMENTS.rest;
-  const t  = S.appliedThought;
-  const remaining = S.carouselQ.filter((_,i) => i > S.carouselIdx);
+  const mv      = MOVEMENTS[S.appliedMovement] || MOVEMENTS.rest;
+  const t       = S.appliedThought;
+  const hasMore = (S.carouselIdx + 1) < S.carouselQ.length;
 
-  const nextIdx = S.carouselIdx + 1;
-  const hasMore = nextIdx < S.carouselQ.length;
-
-  return `<div class="ma">
+  return `
+  <div class="ma-wrap">
     <div class="ma-ico" style="background:${mv.bg}">${mv.ico}</div>
     <div class="ma-mv">${mv.lbl}</div>
     <div class="ma-th">${t ? esc(t.text) : ''}</div>
     <div class="ma-ph">${mv.ph}</div>
-    ${hasMore ? `
-      <button class="btn btn-p" style="max-width:220px;margin-bottom:12px" onclick="nextCard()">Pensée suivante →</button>
-      <button class="btn btn-s" style="max-width:220px" onclick="go('home')">Terminer le moment</button>
-    ` : `
-      <button class="btn btn-g" style="max-width:220px;margin-bottom:12px" onclick="go('home')">C'est bien pour aujourd'hui</button>
-      <button class="btn btn-s" style="max-width:220px" onclick="go('traces')">Voir les Traces</button>
-    `}
-    ${t && t.nature === 'knot' ? `<button class="btn btn-ghost" style="max-width:220px;margin-top:8px" onclick="openJournal('${t.id}')">Ouvrir le journal →</button>` : ''}
+    <div class="ma-actions">
+      ${hasMore
+        ? `<button class="btn btn-p" onclick="nextCard()">Pensée suivante →</button>
+           <button class="btn btn-s" onclick="go('home')">Terminer le moment</button>`
+        : `<button class="btn btn-g" onclick="go('home')">C'est bien pour aujourd'hui</button>
+           <button class="btn btn-s" onclick="go('traces')">Voir les Traces</button>`}
+      ${t && t.nature === 'knot'
+        ? `<button class="btn btn-ghost" onclick="go('journal',{journalThought:'${t.id}'})">Ouvrir le journal →</button>`
+        : ''}
+    </div>
   </div>`;
 }
 
@@ -1023,21 +1059,24 @@ function nextCard() {
   go('carousel');
 }
 
-// ── VIEW: BUBBLES ─────────────────────────────
+// ══════════════════════════════════════════
+// VIEW: BUBBLES
+// ══════════════════════════════════════════
 function bubbles() {
-  return `<div class="sa">
-    <div style="padding:52px 20px 16px">
+  return `
+  <div class="sa">
+    <div class="bub-header">
       <span class="sup">Tes mondes de vie</span>
-      <div style="font-family:var(--d);font-size:36px;font-weight:300;color:var(--enc);line-height:1.1;letter-spacing:-.01em;margin-bottom:20px">Les Bulles.</div>
+      <div style="font-family:var(--d);font-size:36px;font-weight:300;color:var(--enc);line-height:1.1;letter-spacing:-.01em;margin-bottom:4px">Les Bulles.</div>
     </div>
     <div class="bub-grid">
       ${S.bubbles.map(b => {
-        const cnt = S.thoughts.filter(t => t.bubbleId === b.id && t.status === 'clarified').length;
+        const cnt = S.thoughts.filter(t => t.bubbleId === b.id && (t.status === 'clarified' || t.status === 'in_motion')).length;
         return `<button class="bub-card" style="background:${b.color}" onclick="openBubble('${b.id}')">
           <div class="bc-top">
             <span class="bc-ico">${b.emoji}</span>
             <span class="bc-name">${esc(b.name)}</span>
-            <span class="bc-cnt">${cnt} pensée${cnt!==1?'s':''}</span>
+            <span class="bc-cnt">${cnt} pensée${cnt !== 1 ? 's' : ''}</span>
           </div>
           <div class="bc-bot"><span class="bc-arr">→</span></div>
         </button>`;
@@ -1054,73 +1093,76 @@ function bubbles() {
 
 function openBubble(id) {
   S.currentBubble = id;
-  S.bubbleTab = 'vivant';
+  S.bubbleTab     = 'vivant';
   go('bubble_detail');
 }
 
-// ── VIEW: BUBBLE DETAIL ───────────────────────
+// ══════════════════════════════════════════
+// VIEW: BUBBLE DETAIL
+// ══════════════════════════════════════════
 function bubble_detail() {
   const b = getBubble(S.currentBubble);
   if (!b) return bubbles();
-  const thoughts = S.thoughts.filter(t => t.bubbleId === b.id && t.status === 'clarified');
+
+  const thoughts = S.thoughts.filter(t => t.bubbleId === b.id && t.status !== 'deposed');
   const journals = S.journalEntries.filter(j => j.bubbleId === b.id);
 
   let bodyHTML = '';
   if (S.bubbleTab === 'vivant') {
     bodyHTML = thoughts.length === 0
-      ? `<div class="bd-empty">Aucune pensée clarifiée dans cette bulle.<br>Clarifie des pensées et rattache-les ici.</div>`
-      : `<div style="display:flex;flex-direction:column;gap:8px">${thoughts.map(t => thoughtCardHTML(t, `openJournal('${t.id}')`)).join('')}</div>`;
-  } else if (S.bubbleTab === 'journal') {
-    bodyHTML = `<div style="display:flex;flex-direction:column;gap:8px">
-      <button class="btn btn-s" onclick="openJournalBubble('${b.id}')">+ Écrire dans ce monde</button>
-      ${journals.map(j => `<div class="card" style="padding:16px">
-        <div style="font-size:10px;color:var(--gr);margin-bottom:8px">${timeSince(j.createdAt)}</div>
-        <div style="font-size:14px;color:var(--enc);line-height:1.6">${esc(j.content)}</div>
-      </div>`).join('') || `<div class="bd-empty">Pas encore d'entrées dans ce journal.</div>`}
+      ? `<div class="bd-empty">Aucune pensée dans cette bulle.<br>Clarifie des pensées et rattache-les ici.</div>`
+      : `<div style="display:flex;flex-direction:column;gap:8px">${thoughts.map(t => thoughtCardHTML(t, `go('journal',{journalThought:'${t.id}'})`)).join('')}</div>`;
+  } else {
+    bodyHTML = `<div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-s" style="margin-bottom:4px" onclick="go('journal',{journalBubble:'${b.id}',journalThought:null})">+ Écrire dans ce monde</button>
+      ${journals.length === 0
+        ? `<div class="bd-empty">Pas encore d'entrées dans ce journal.</div>`
+        : journals.slice().reverse().map(j => `<div class="card" style="background:#fff;border:1px solid rgba(26,23,20,.07);border-radius:14px;padding:16px">
+            <div style="font-size:10px;color:var(--gr);margin-bottom:8px">${timeSince(j.createdAt)}</div>
+            <div style="font-size:14px;color:var(--enc);line-height:1.6">${esc(j.content)}</div>
+          </div>`).join('')}
     </div>`;
   }
 
-  return `<div class="bd">
-    <div class="bd-hd" style="background:${b.color}">
-      <button class="bd-back" style="color:rgba(245,240,232,.6)" onclick="go('bubbles')">←</button>
-      <span class="bd-ico">${b.emoji}</span>
-      <div class="bd-name" style="color:var(--iv)">${esc(b.name)}</div>
-      <div class="bd-int" style="color:rgba(245,240,232,.6)">Déposer · Clarifier · Avancer</div>
-    </div>
-    <div class="bd-tabs" style="background:${b.color}">
-      <button class="bd-tab${S.bubbleTab==='vivant'?' act':''}" onclick="setBubbleTab('vivant')" style="color:var(--iv)">Ce qui est vivant</button>
-      <button class="bd-tab${S.bubbleTab==='journal'?' act':''}" onclick="setBubbleTab('journal')" style="color:var(--iv)">Journal</button>
-    </div>
-    <div class="bd-body">
-      ${bodyHTML}
-    </div>
-  </div>`;
+  return `
+  <div class="bd-hd" style="background:${b.color}">
+    <button class="bd-back" style="color:rgba(245,240,232,.6)" onclick="go('bubbles')">←</button>
+    <span class="bd-ico">${b.emoji}</span>
+    <div class="bd-name" style="color:var(--iv)">${esc(b.name)}</div>
+    <div class="bd-int" style="color:rgba(245,240,232,.55)">Déposer · Clarifier · Avancer</div>
+  </div>
+  <div class="bd-tabs" style="background:${b.color}">
+    <button class="bd-tab${S.bubbleTab === 'vivant'  ? ' act' : ''}" onclick="setBubbleTab('vivant')"  style="color:var(--iv)">Ce qui est vivant</button>
+    <button class="bd-tab${S.bubbleTab === 'journal' ? ' act' : ''}" onclick="setBubbleTab('journal')" style="color:var(--iv)">Journal</button>
+  </div>
+  <div class="bd-div"></div>
+  <div class="bd-body">${bodyHTML}</div>`;
 }
 
 function setBubbleTab(tab) { S.bubbleTab = tab; render(); }
-function openJournalBubble(bid) { S.journalBubble = bid; S.journalThought = null; go('journal'); }
 
-// ── VIEW: TRACES ──────────────────────────────
+// ══════════════════════════════════════════
+// VIEW: TRACES
+// ══════════════════════════════════════════
 function traces() {
-  const dep = S.thoughts.filter(t=>t.status==='deposed').length;
-  const cla = S.thoughts.filter(t=>t.status==='clarified'||t.status==='in_motion'||t.status==='rested').length;
-  const mov = S.thoughts.filter(t=>t.status==='in_motion').length;
-  const res = S.thoughts.filter(t=>t.status==='rested').length;
+  const dep = S.thoughts.filter(t => t.status === 'deposed').length;
+  const cla = S.thoughts.filter(t => t.status === 'clarified').length;
+  const mov = S.thoughts.filter(t => t.status === 'in_motion').length;
+  const res = S.thoughts.filter(t => t.status === 'rested').length;
   const tot = S.thoughts.length;
+  const placed = S.thoughts.filter(t => t.status === 'in_motion' || t.status === 'rested').slice(0, 5);
+  const noise  = tot === 0 ? 0 : Math.round((1 - dep / tot) * 100);
 
-  const placed = S.thoughts.filter(t=>t.status==='in_motion'||t.status==='rested').slice(0,4);
-
-  const noiseLvl = tot === 0 ? 0 : Math.round((1 - dep/tot)*100);
-
-  return `<div class="sa">
-    <div style="padding:52px 20px 16px">
+  return `
+  <div class="sa">
+    <div class="traces-hd">
       <span class="sup">Progression</span>
-      <div style="font-family:var(--d);font-size:36px;font-weight:300;color:var(--enc);line-height:1.1;letter-spacing:-.01em;margin-bottom:20px">Traces.</div>
+      <div style="font-family:var(--d);font-size:36px;font-weight:300;color:var(--enc);line-height:1.1;letter-spacing:-.01em;margin-bottom:4px">Traces.</div>
     </div>
     <div class="tw">
       <div class="t-stats">
         <div class="t-stat big">
-          <div class="ts-num">${noiseLvl}%</div>
+          <div class="ts-num">${noise}%</div>
           <div class="ts-lbl">De bruit en moins dans ta tête</div>
         </div>
         <div class="t-stat">
@@ -1141,7 +1183,9 @@ function traces() {
         </div>
       </div>
 
-      ${tot===0 ? `<div class="t-phrase">Commence par déposer ce qui tourne en fond.</div>` : `<div class="t-phrase">${noiseLvl > 50 ? 'Il y a moins de bruit.' : 'Tu avances, à ton rythme.'}</div>`}
+      <div class="t-phrase">${tot === 0
+        ? 'Commence par déposer ce qui tourne.'
+        : noise > 50 ? 'Il y a moins de bruit.' : 'Tu avances, à ton rythme.'}</div>
 
       ${placed.length > 0 ? `
       <div class="h-sec" style="margin-bottom:10px">Pensées en mouvement</div>
@@ -1152,7 +1196,7 @@ function traces() {
       ${dep > 0 ? `
       <div class="h-notice" onclick="go('clarify_list')">
         <div class="hn-sup">À clarifier · ${dep}</div>
-        <div class="hn-txt">${dep} pensée${dep>1?'s':''} attende${dep>1?'nt':''} encore d'être clarifiée${dep>1?'s':''}.</div>
+        <div class="hn-txt">${dep} pensée${dep > 1 ? 's attendent' : ' attend'} encore.</div>
       </div>` : ''}
 
       <div style="height:8px"></div>
@@ -1161,49 +1205,50 @@ function traces() {
   ${navHTML('traces')}`;
 }
 
-// ── VIEW: JOURNAL ─────────────────────────────
+// ══════════════════════════════════════════
+// VIEW: JOURNAL
+// ══════════════════════════════════════════
 function journal() {
-  const t = S.journalThought ? S.thoughts.find(x=>x.id===S.journalThought) : null;
+  const t       = S.journalThought ? S.thoughts.find(x => x.id === S.journalThought) : null;
   const prompts = t ? (JOURNAL_PROMPTS[t.nature] || JOURNAL_PROMPTS.free) : JOURNAL_PROMPTS.free;
 
-  return `<div class="sa full">
-    <div class="jw">
-      <button class="back-btn" onclick="go(S.prevView||'home')">←</button>
-      <span class="sup">Journal</span>
-      ${t ? `<div class="j-ref">
-        <span class="jr-sym">${getN(t.nature).sym}</span>
-        <span class="jr-txt">${esc(t.text)}</span>
-      </div>` : ''}
-      <div class="j-prompts">
-        <div class="jp-lbl">Questions pour déplier</div>
-        ${prompts.map(p=>`<div class="jp-item">${p}</div>`).join('')}
-      </div>
-      <textarea id="j-ta" class="j-ta" placeholder="Écris librement ce qui vient…"></textarea>
-      <button class="btn btn-g" onclick="saveJournal()">Enregistrer</button>
+  return `
+  <div class="jw-inner">
+    <button class="back" onclick="go(S.prevView||'home')">←</button>
+    <span class="sup">Journal</span>
+    ${t ? `<div class="j-ref">
+      <span class="jr-sym">${getN(t.nature).sym}</span>
+      <span class="jr-txt">${esc(t.text)}</span>
+    </div>` : ''}
+    <div class="j-prompts">
+      <div class="jp-lbl">Questions pour déplier</div>
+      ${prompts.map(p => `<div class="jp-item">${esc(p)}</div>`).join('')}
     </div>
+    <textarea id="j-ta" class="j-ta" placeholder="Écris librement ce qui vient…"></textarea>
+    <button class="btn btn-g" onclick="saveJournal()">Enregistrer</button>
   </div>`;
 }
 
-function openJournal(tid) { S.journalThought = tid; go('journal'); }
-function openThought(id)  { S.journalThought = id;  go('journal'); }
-
 function saveJournal() {
   const ta = document.getElementById('j-ta');
-  if (!ta || !ta.value.trim()) { go('home'); return; }
+  if (!ta || !ta.value.trim()) { go(S.prevView || 'home'); return; }
   S.journalEntries.push({
-    id: uid(),
+    id:        uid(),
     thoughtId: S.journalThought || null,
-    bubbleId: S.journalBubble || null,
-    content: ta.value.trim(),
+    bubbleId:  S.journalBubble  || null,
+    content:   ta.value.trim(),
     createdAt: new Date().toISOString(),
   });
   save();
-  go('home');
+  go(S.prevView || 'home');
 }
 
-// ── VIEW: RETURN SCREEN ───────────────────────
+// ══════════════════════════════════════════
+// VIEW: RETURN SCREEN
+// ══════════════════════════════════════════
 function return_screen() {
-  return `<div class="rw">
+  return `
+  <div class="rw">
     <div class="rw-word">FLIT</div>
     <div class="rw-title">On reprend d'ici.</div>
     <div class="rw-ph">Rien n'est en retard.</div>
@@ -1228,79 +1273,59 @@ function return_screen() {
   </div>`;
 }
 
-// ── VIEW: ADD BUBBLE ──────────────────────────
+// ══════════════════════════════════════════
+// VIEW: ADD BUBBLE
+// ══════════════════════════════════════════
 function add_bubble() {
-  const colors = BUBBLE_COLORS;
-  return `<div class="sa full">
-    <div style="padding:52px 20px 16px">
-      <button class="back-btn" onclick="go('bubbles')">←</button>
+  return `
+  <div class="sa">
+    <div class="ab-hd">
+      <button class="back" onclick="go('bubbles')">←</button>
       <span class="sup">Nouvelle Bulle</span>
-      <div style="font-family:var(--d);font-size:32px;font-weight:300;color:var(--enc);margin-bottom:20px">Crée un nouveau monde.</div>
+      <div style="font-family:var(--d);font-size:32px;font-weight:300;color:var(--enc);margin-bottom:4px">Crée un nouveau monde.</div>
     </div>
     <div class="ab-form">
-      <div class="ab-lbl">Choisir une icône</div>
+      <span class="ab-lbl">Choisir une icône</span>
       <div class="ab-grid">
-        ${BUBBLE_EMOJIS.map(e=>`<button class="ab-em${S.addBubbleEmoji===e?' sel':''}" onclick="S.addBubbleEmoji='${e}';render()">${e}</button>`).join('')}
+        ${BUBBLE_EMOJIS.map(e => `<button class="ab-em${S.addBubbleEmoji === e ? ' sel' : ''}" onclick="pickBubbleEmoji('${e}')">${e}</button>`).join('')}
       </div>
-      <div class="ab-lbl">Nom de la bulle</div>
-      <input id="ab-name" class="ab-inp" type="text" placeholder="Ex: Maison, Relations, Sport…" value="">
-      <div class="ab-lbl">Couleur</div>
+      <span class="ab-lbl">Nom de la bulle</span>
+      <input id="ab-name" class="ab-inp" type="text" placeholder="Ex: Maison, Relations, Sport…">
+      <span class="ab-lbl">Couleur</span>
       <div class="ab-colors">
-        ${colors.map(c=>`<button class="ab-col${S.addBubbleColor===c?' sel':''}" style="background:${c}" onclick="S.addBubbleColor='${c}';render()"></button>`).join('')}
+        ${BUBBLE_COLORS.map(c => `<button class="ab-col${S.addBubbleColor === c ? ' sel' : ''}" style="background:${c}" onclick="pickBubbleColor('${c}')"></button>`).join('')}
+      </div>
+      <div style="background:${S.addBubbleColor};border-radius:16px;padding:18px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px">
+        <span style="font-size:24px">${S.addBubbleEmoji}</span>
+        <span id="ab-preview" style="font-size:15px;font-weight:600;color:var(--iv)">Aperçu</span>
       </div>
       <button class="btn btn-p" onclick="createBubble()">Créer cette bulle</button>
     </div>
+    <div style="height:24px"></div>
   </div>`;
 }
 
+function pickBubbleEmoji(e) {
+  S.addBubbleEmoji = e;
+  render();
+}
+function pickBubbleColor(c) {
+  S.addBubbleColor = c;
+  render();
+}
+
 function createBubble() {
-  const inp = document.getElementById('ab-name');
+  const inp  = document.getElementById('ab-name');
   const name = inp ? inp.value.trim() : '';
-  if (!name) { if(inp) inp.focus(); return; }
-  S.bubbles.push({
-    id: uid(),
-    name,
-    emoji: S.addBubbleEmoji,
-    color: S.addBubbleColor,
-  });
+  if (!name) { if (inp) { inp.focus(); inp.style.borderColor = '#e53'; } return; }
+  S.bubbles.push({id: uid(), name, emoji: S.addBubbleEmoji, color: S.addBubbleColor});
   save();
   go('bubbles');
 }
 
-// ── SHARED COMPONENTS ─────────────────────────
-function thoughtCardHTML(t, onclick) {
-  const n = getN(t.nature);
-  const tags = thinkTag(t);
-  const mv = t.recommendedMovement ? (MOVEMENTS[t.recommendedMovement]||{}).lbl : '';
-  return `<div class="tc"${onclick?` onclick="${onclick}"`:''}>
-    <div class="tc-badge ${n.cls}">${n.sym||'·'}</div>
-    <div class="tc-body">
-      <div class="tc-txt">${esc(t.text)}</div>
-      <div class="tc-meta">
-        ${tags.map(tg=>`<span class="tc-tag">${tg}</span>`).join('')}
-        ${mv?`<span class="tc-tag" style="color:var(--vb)">${mv}</span>`:''}
-      </div>
-    </div>
-    ${onclick?`<span class="tc-arr">→</span>`:''}
-  </div>`;
-}
-
-// ── UTILITIES ─────────────────────────────────
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function timeSince(iso) {
-  const diff = Date.now() - new Date(iso).getTime();
-  const h = Math.floor(diff/3600000);
-  const d = Math.floor(diff/86400000);
-  if (d > 1) return `Il y a ${d} jours`;
-  if (d === 1) return 'Hier';
-  if (h > 1) return `Il y a ${h}h`;
-  return "À l'instant";
-}
-
-// ── INIT ──────────────────────────────────────
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
 load();
 seedDemo();
 render();
