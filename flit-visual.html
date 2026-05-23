@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLIT — Architecture Complète</title>
+<style>
+  :root {
+    --ivoire: #F5F0E8;
+    --ivoire-dark: #EDE8DF;
+    --encre: #1A1714;
+    --vert-bouteille: #2C4A3E;
+    --vert-profond: #20372D;
+    --dore-sourd: #C4A882;
+    --gris-chaud: #8A8480;
+    --bleu-nuit: #2A3548;
+    --brun-tabac: #4A3728;
+    --ivoire-mid: #EAE4D8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ivoire);
+    color: var(--encre);
+    font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 60px 40px 100px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    text-align: center;
+    padding: 80px 0 60px;
+    border-bottom: 1px solid rgba(26,23,20,0.12);
+    margin-bottom: 80px;
+  }
+
+  .logo-knot {
+    width: 48px;
+    height: 32px;
+    margin: 0 auto 24px;
+    display: block;
+  }
+
+  .logo-text {
+    font-size: 52px;
+    font-weight: 200;
+    letter-spacing: 0.35em;
+    color: var(--encre);
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .method-line {
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    color: var(--gris-chaud);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header-phrase {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--encre);
+    max-width: 580px;
+    margin: 0 auto;
+    line-height: 1.7;
+    font-style: italic;
+    opacity: 0.75;
+  }
+
+  /* ─── SECTION TITLE ─── */
+  .section {
+    margin-bottom: 72px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dore-sourd);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--encre);
+    margin-bottom: 32px;
+    letter-spacing: -0.01em;
+  }
+
+  /* ─── GRID HELPERS ─── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
+  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+
+  /* ─── CARD ─── */
+  .card {
+    background: white;
+    border: 1px solid rgba(26,23,20,0.08);
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .card-dark {
+    background: var(--vert-profond);
+    border: none;
+    border-radius: 16px;
+    padding: 24px;
+    color: var(--ivoire);
+  }
+
+  .card-ink {
+    background: var(--encre);
+    border: none;
+    border-radius: 16px;
+    padding: 24px;
+    color: var(--ivoire);
+  }
+
+  .card-night {
+    background: var(--bleu-nuit);
+    border: none;
+    border-radius: 16px;
+    padding: 24px;
+    color: var(--ivoire);
+  }
+
+  .card-gold {
+    background: rgba(196,168,130,0.12);
+    border: 1px solid rgba(196,168,130,0.3);
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .card h3 {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    letter-spacing: 0.01em;
+  }
+
+  .card-dark h3, .card-ink h3, .card-night h3 {
+    color: var(--dore-sourd);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .card p {
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--gris-chaud);
+  }
+
+  .card-dark p, .card-ink p, .card-night p {
+    color: rgba(245,240,232,0.65);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  /* ─── VISION BLOCK ─── */
+  .vision-block {
+    background: var(--encre);
+    border-radius: 24px;
+    padding: 56px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .vision-left h2 {
+    font-size: 36px;
+    font-weight: 200;
+    color: var(--ivoire);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+
+  .vision-left h2 em {
+    color: var(--dore-sourd);
+    font-style: normal;
+  }
+
+  .vision-left p {
+    font-size: 15px;
+    color: rgba(245,240,232,0.6);
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  .vision-right {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .vision-pill {
+    background: rgba(245,240,232,0.07);
+    border: 1px solid rgba(245,240,232,0.12);
+    border-radius: 50px;
+    padding: 11px 20px;
+    font-size: 13px;
+    color: rgba(245,240,232,0.75);
+    letter-spacing: 0.02em;
+  }
+
+  .vision-pill.active {
+    background: var(--vert-bouteille);
+    border-color: var(--vert-bouteille);
+    color: var(--ivoire);
+  }
+
+  /* ─── THREE PILLARS ─── */
+  .pillar-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .pillar {
+    padding: 40px 32px;
+    position: relative;
+  }
+
+  .pillar-1 { background: var(--vert-bouteille); }
+  .pillar-2 { background: var(--encre); }
+  .pillar-3 { background: var(--bleu-nuit); }
+
+  .pillar-num {
+    font-size: 72px;
+    font-weight: 100;
+    color: rgba(255,255,255,0.08);
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    line-height: 1;
+  }
+
+  .pillar h2 {
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--ivoire);
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .pillar .pillar-sub {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--dore-sourd);
+    margin-bottom: 20px;
+  }
+
+  .pillar ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pillar ul li {
+    font-size: 12px;
+    color: rgba(245,240,232,0.65);
+    padding-left: 14px;
+    position: relative;
+  }
+
+  .pillar ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--dore-sourd);
+    opacity: 0.5;
+  }
+
+  /* ─── SCREENS MAP ─── */
+  .screens-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
+
+  .screen-card {
+    background: white;
+    border: 1px solid rgba(26,23,20,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .screen-header {
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+
+  .screen-body {
+    padding: 14px 16px 18px;
+  }
+
+  .screen-num {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dore-sourd);
+    margin-bottom: 4px;
+  }
+
+  .screen-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--encre);
+    margin-bottom: 6px;
+  }
+
+  .screen-desc {
+    font-size: 11px;
+    color: var(--gris-chaud);
+    line-height: 1.5;
+  }
+
+  .s1 .screen-header { background: var(--vert-bouteille); }
+  .s2 .screen-header { background: var(--encre); }
+  .s3 .screen-header { background: var(--vert-profond); }
+  .s4 .screen-header { background: var(--bleu-nuit); }
+  .s5 .screen-header { background: var(--brun-tabac); }
+  .s6 .screen-header { background: #3A2A48; }
+  .s7 .screen-header { background: #1E3A30; }
+  .s8 .screen-header { background: #2A3020; }
+  .s9 .screen-header { background: #3A2820; }
+  .s10 .screen-header { background: #1A2838; }
+
+  /* ─── MATRIX ─── */
+  .matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  .matrix-table th {
+    background: var(--encre);
+    color: var(--dore-sourd);
+    padding: 14px 16px;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-align: left;
+  }
+
+  .matrix-table th:first-child { border-radius: 12px 0 0 0; }
+  .matrix-table th:last-child { border-radius: 0 12px 0 0; }
+
+  .matrix-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(26,23,20,0.06);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .matrix-table tr:last-child td { border-bottom: none; }
+
+  .matrix-table tr:nth-child(even) td { background: rgba(26,23,20,0.02); }
+
+  .mood-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .mood-fire { background: rgba(44,74,62,0.12); color: var(--vert-bouteille); }
+  .mood-pressure { background: rgba(74,55,40,0.12); color: var(--brun-tabac); }
+  .mood-slow { background: rgba(42,53,72,0.12); color: var(--bleu-nuit); }
+  .mood-float { background: rgba(138,132,128,0.12); color: var(--gris-chaud); }
+
+  /* ─── DATA MODEL ─── */
+  .model-block {
+    background: var(--encre);
+    border-radius: 20px;
+    padding: 32px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  .model-file {
+    margin-bottom: 28px;
+  }
+
+  .model-file:last-child { margin-bottom: 0; }
+
+  .model-name {
+    font-size: 13px;
+    color: var(--dore-sourd);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .model-line {
+    font-size: 11px;
+    color: rgba(245,240,232,0.5);
+    line-height: 2;
+  }
+
+  .model-line .key { color: #7EC8C8; }
+  .model-line .type { color: rgba(245,240,232,0.4); }
+  .model-line .val { color: #C8A87E; }
+  .model-line .comment { color: rgba(245,240,232,0.25); font-style: italic; }
+
+  /* ─── PALETTE ─── */
+  .palette-row {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 10px;
+  }
+
+  .color-swatch {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(26,23,20,0.08);
+  }
+
+  .color-block {
+    height: 64px;
+  }
+
+  .color-info {
+    background: white;
+    padding: 8px 10px;
+  }
+
+  .color-name {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--encre);
+    margin-bottom: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .color-hex {
+    font-size: 10px;
+    color: var(--gris-chaud);
+    font-family: 'SF Mono', monospace;
+  }
+
+  /* ─── NAVIGATION ─── */
+  .nav-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--ivoire-dark);
+    border-radius: 20px;
+    padding: 28px 32px;
+    overflow: hidden;
+  }
+
+  .nav-item {
+    flex: 1;
+    text-align: center;
+    padding: 16px 12px;
+    position: relative;
+  }
+
+  .nav-item.active {
+    background: var(--encre);
+    border-radius: 12px;
+    color: var(--ivoire);
+  }
+
+  .nav-item .nav-icon { font-size: 20px; display: block; margin-bottom: 6px; }
+  .nav-item .nav-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--encre);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-item.active .nav-label { color: var(--ivoire); }
+
+  .nav-item .nav-sub {
+    font-size: 10px;
+    color: var(--gris-chaud);
+    margin-top: 4px;
+  }
+
+  .nav-primary {
+    background: var(--vert-bouteille);
+    border-radius: 12px;
+  }
+
+  .nav-primary .nav-label { color: var(--ivoire); }
+  .nav-primary .nav-sub { color: rgba(245,240,232,0.5); }
+
+  /* ─── MOVEMENTS ─── */
+  .movement-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+  }
+
+  .movement-card {
+    background: white;
+    border: 1px solid rgba(26,23,20,0.08);
+    border-radius: 14px;
+    padding: 18px 14px;
+    text-align: center;
+  }
+
+  .movement-card .m-icon {
+    font-size: 22px;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .movement-card .m-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--encre);
+    margin-bottom: 6px;
+  }
+
+  .movement-card .m-for {
+    font-size: 10px;
+    color: var(--gris-chaud);
+    line-height: 1.4;
+  }
+
+  /* ─── NATURES ─── */
+  .nature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 14px;
+  }
+
+  .nature-card {
+    border-radius: 16px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .nature-card .n-sym {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .nature-card .n-name {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .nature-card .n-desc {
+    font-size: 11px;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+
+  .n-action { background: rgba(44,74,62,0.1); color: var(--vert-profond); }
+  .n-knot { background: rgba(42,53,72,0.1); color: var(--bleu-nuit); }
+  .n-idea { background: rgba(196,168,130,0.15); color: var(--brun-tabac); }
+  .n-reminder { background: rgba(26,23,20,0.07); color: var(--encre); }
+
+  /* ─── BUBBLES ─── */
+  .bubble-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+  }
+
+  .bubble-item {
+    background: white;
+    border: 1px solid rgba(26,23,20,0.08);
+    border-radius: 50px;
+    padding: 10px 16px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--encre);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .bubble-default {
+    background: var(--vert-profond);
+    color: var(--ivoire);
+    border-color: transparent;
+  }
+
+  /* ─── UX RULES ─── */
+  .rule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .rule-item {
+    background: white;
+    border: 1px solid rgba(26,23,20,0.07);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .rule-num {
+    background: var(--vert-bouteille);
+    color: var(--ivoire);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .rule-text {
+    font-size: 13px;
+    color: var(--encre);
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  .rule-sub {
+    font-size: 11px;
+    color: var(--gris-chaud);
+    margin-top: 3px;
+  }
+
+  /* ─── COPY BLOCK ─── */
+  .copy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .copy-block {
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .copy-good { background: rgba(44,74,62,0.07); border: 1px solid rgba(44,74,62,0.2); }
+  .copy-bad { background: rgba(74,40,40,0.06); border: 1px solid rgba(74,40,40,0.15); }
+
+  .copy-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .copy-good .copy-label { color: var(--vert-bouteille); }
+  .copy-bad .copy-label { color: #8A3030; }
+
+  .copy-word {
+    display: inline-block;
+    margin: 3px 4px;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+  }
+
+  .copy-good .copy-word { background: rgba(44,74,62,0.12); color: var(--vert-profond); }
+  .copy-bad .copy-word { background: rgba(74,40,40,0.1); color: #8A3030; text-decoration: line-through; }
+
+  /* ─── QUOTE ─── */
+  .quote-block {
+    background: var(--vert-profond);
+    border-radius: 20px;
+    padding: 40px 48px;
+    text-align: center;
+    margin: 40px 0;
+  }
+
+  .quote-block blockquote {
+    font-size: 22px;
+    font-weight: 200;
+    color: var(--ivoire);
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .quote-block cite {
+    display: block;
+    margin-top: 16px;
+    font-size: 11px;
+    color: var(--dore-sourd);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-style: normal;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    border: none;
+    border-top: 1px solid rgba(26,23,20,0.08);
+    margin: 64px 0;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    text-align: center;
+    padding: 48px 0 20px;
+    font-size: 11px;
+    color: var(--gris-chaud);
+    letter-spacing: 0.08em;
+    border-top: 1px solid rgba(26,23,20,0.08);
+  }
+
+  /* ─── TAGS ─── */
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    margin: 2px;
+  }
+
+  .tag-green { background: rgba(44,74,62,0.12); color: var(--vert-bouteille); }
+  .tag-gold { background: rgba(196,168,130,0.18); color: var(--brun-tabac); }
+  .tag-blue { background: rgba(42,53,72,0.12); color: var(--bleu-nuit); }
+  .tag-warm { background: rgba(26,23,20,0.07); color: var(--encre); }
+
+  /* ─── SWIPE DEMO ─── */
+  .swipe-demo {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .swipe-left {
+    background: rgba(42,53,72,0.08);
+    border: 1px solid rgba(42,53,72,0.2);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .swipe-right {
+    background: rgba(44,74,62,0.08);
+    border: 1px solid rgba(44,74,62,0.2);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .swipe-center-card {
+    background: white;
+    border: 1px solid rgba(26,23,20,0.1);
+    border-radius: 20px;
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: 0 8px 40px rgba(26,23,20,0.08);
+  }
+
+  .swipe-sym { font-size: 24px; margin-bottom: 6px; }
+  .swipe-text { font-size: 12px; color: var(--encre); font-weight: 400; margin-bottom: 12px; }
+  .swipe-energy { font-size: 10px; color: var(--gris-chaud); }
+  .swipe-movement {
+    margin-top: 14px;
+    background: var(--vert-bouteille);
+    color: var(--ivoire);
+    border-radius: 50px;
+    padding: 7px 18px;
+    font-size: 11px;
+    font-weight: 500;
+    display: inline-block;
+  }
+
+  .arrow-text { font-size: 22px; color: var(--gris-chaud); }
+
+  .swipe-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: var(--gris-chaud);
+  }
+
+  .swipe-options {
+    font-size: 11px;
+    color: var(--encre);
+    line-height: 2;
+  }
+
+  /* ─── STATUTS ─── */
+  .status-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    padding: 4px;
+  }
+
+  .status-node {
+    background: white;
+    border: 1px solid rgba(26,23,20,0.1);
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--encre);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .status-node.active {
+    background: var(--vert-bouteille);
+    color: var(--ivoire);
+    border-color: var(--vert-bouteille);
+  }
+
+  .status-arrow {
+    font-size: 14px;
+    color: var(--dore-sourd);
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+
+  /* ─── JOURNAL TEMPLATES ─── */
+  .journal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .journal-card {
+    background: white;
+    border: 1px solid rgba(26,23,20,0.08);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .journal-type {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dore-sourd);
+    margin-bottom: 8px;
+  }
+
+  .journal-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--encre);
+    margin-bottom: 10px;
+  }
+
+  .journal-q {
+    font-size: 11px;
+    color: var(--gris-chaud);
+    line-height: 1.8;
+    font-style: italic;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     HEADER
+══════════════════════════════════ -->
+<div class="header">
+  <svg class="logo-knot" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 16 C12 10, 18 6, 24 10 C30 14, 36 10, 36 16 C36 22, 30 26, 24 22 C18 18, 12 22, 12 16 Z" stroke="#1A1714" stroke-width="1.5" fill="none"/>
+    <path d="M36 16 L46 13" stroke="#1A1714" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>
+  <span class="logo-text">FLIT</span>
+  <p class="method-line">Déposer · Clarifier · Avancer</p>
+  <p class="header-phrase">Tout ce que tu déposes mérite d'abord d'être compris<br>avant de prendre forme.</p>
+</div>
+
+
+<!-- ══════════════════════════════════
+     1. VISION PRODUIT
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">01 — Vision</div>
+  <div class="section-title">Ce qu'est FLIT</div>
+
+  <div class="vision-block">
+    <div class="vision-left">
+      <h2>Un espace mental premium pour <em>déposer</em> ce qui prend de la place, <em>clarifier</em> ses pensées, puis <em>avancer</em> selon son état intérieur.</h2>
+      <p>FLIT aide à sortir les pensées de la tête, les déposer dans un espace sûr, clarifier ce qu'elles demandent, et avancer selon l'énergie réelle du moment — sans se brusquer, sans performer.</p>
+    </div>
+    <div class="vision-right">
+      <div class="vision-pill active">Un espace mental</div>
+      <div class="vision-pill active">Un outil anti-overwhelm</div>
+      <div class="vision-pill active">Une app Apple-like premium</div>
+      <div class="vision-pill active">Un système de clarification douce</div>
+      <div class="vision-pill">≠ To-do list classique</div>
+      <div class="vision-pill">≠ Planner de productivité</div>
+      <div class="vision-pill">≠ App wellness pastel</div>
+      <div class="vision-pill">≠ Gamification</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     2. TROIS PILIERS
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">02 — Architecture Expérience</div>
+  <div class="section-title">Les trois piliers</div>
+
+  <div class="pillar-row">
+    <div class="pillar pillar-1">
+      <div class="pillar-num">1</div>
+      <h2>Déposer</h2>
+      <div class="pillar-sub">Le geste d'entrée</div>
+      <ul>
+        <li>Ultra simple, zéro friction</li>
+        <li>Un seul champ texte</li>
+        <li>Aucun choix, aucune catégorie</li>
+        <li>Aucun symbole au dépôt</li>
+        <li>Question : "Qu'est-ce qui prend de la place ?"</li>
+        <li>Feedback : "Déposé."</li>
+        <li>Statut initial : Déposé / Non clarifié</li>
+      </ul>
+    </div>
+    <div class="pillar pillar-2">
+      <div class="pillar-num">2</div>
+      <h2>Clarifier</h2>
+      <div class="pillar-sub">Comprendre avant de former</div>
+      <ul>
+        <li>Étape séparée du dépôt</li>
+        <li>Carte pensée au centre</li>
+        <li>Ligne 1 — Nature : ⚡ 🌀 💡 🔔</li>
+        <li>Ligne 2 — Bulle / Monde de vie</li>
+        <li>Ligne 3 — Énergie : Douce / Normale / Intense</li>
+        <li>Bouton : "C'est assez clair."</li>
+        <li>Jamais "Valider" ou "Prioriser"</li>
+      </ul>
+    </div>
+    <div class="pillar pillar-3">
+      <div class="pillar-num">3</div>
+      <h2>Avancer</h2>
+      <div class="pillar-sub">Selon son état intérieur</div>
+      <ul>
+        <li>Choisir son mood actuel</li>
+        <li>Matrice invisible active</li>
+        <li>Cartes filtrées &amp; adaptées</li>
+        <li>Carousel une pensée à la fois</li>
+        <li>Swipe pour appliquer un mouvement</li>
+        <li>Avancer ≠ finir</li>
+        <li>Ne rien forcer = une forme d'avancée</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     3. NATURES
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">03 — Taxonomie</div>
+  <div class="section-title">Les 4 natures d'une pensée</div>
+
+  <div class="nature-grid">
+    <div class="nature-card n-action">
+      <span class="n-sym">⚡</span>
+      <div class="n-name">À faire</div>
+      <div class="n-desc">Tâche / action<br>Mouvement : Faire · Planifier</div>
+    </div>
+    <div class="nature-card n-knot">
+      <span class="n-sym">🌀</span>
+      <div class="n-name">Ça tourne</div>
+      <div class="n-desc">Nœud / pensée récurrente<br>Mouvement : Déplier · Relier</div>
+    </div>
+    <div class="nature-card n-idea">
+      <span class="n-sym">💡</span>
+      <div class="n-name">Ça germe</div>
+      <div class="n-desc">Idée / intuition / envie<br>Mouvement : Laisser germer · Structurer</div>
+    </div>
+    <div class="nature-card n-reminder">
+      <span class="n-sym">🔔</span>
+      <div class="n-name">Ne pas oublier</div>
+      <div class="n-desc">Rappel / chose à retenir<br>Mouvement : Planifier · Faire</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     4. MATRICE INVISIBLE
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">04 — Matrice Invisible</div>
+  <div class="section-title">Mood → Pensées recommandées</div>
+
+  <table class="matrix-table">
+    <thead>
+      <tr>
+        <th>Mood</th>
+        <th>Message affiché</th>
+        <th>Énergie montrée</th>
+        <th>Natures prioritaires</th>
+        <th>Poids mental</th>
+        <th>Max cartes</th>
+        <th>Mouvements disponibles</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="mood-badge mood-fire">⚡ On fire</span></td>
+        <td style="font-style:italic;color:var(--gris-chaud)">"Tu as de l'élan. On l'utilise pour ce qui compte vraiment."</td>
+        <td><span class="tag tag-warm">Normale</span> <span class="tag tag-warm">Intense</span></td>
+        <td>⚡ Actions · 🌀 Nœuds lourds · 💡 Idées à structurer</td>
+        <td>Présent · Lourd</td>
+        <td style="font-weight:600;color:var(--vert-bouteille)">5</td>
+        <td>Faire · Déplier · Relier · Structurer</td>
+      </tr>
+      <tr>
+        <td><span class="mood-badge mood-pressure">🔥 Sous pression</span></td>
+        <td style="font-style:italic;color:var(--gris-chaud)">"On réduit. Une chose suffit."</td>
+        <td><span class="tag tag-warm">Douce</span></td>
+        <td>🔔 Rappels · ⚡ Actions qui soulagent vite</td>
+        <td>Léger uniquement</td>
+        <td style="font-weight:600;color:var(--brun-tabac)">1–3</td>
+        <td>Faire une chose · Reposer · Respirer · Déposer</td>
+      </tr>
+      <tr>
+        <td><span class="mood-badge mood-slow">🌿 Au ralenti</span></td>
+        <td style="font-style:italic;color:var(--gris-chaud)">"Un petit mouvement suffit."</td>
+        <td><span class="tag tag-warm">Douce</span></td>
+        <td>⚡ Petits gestes · 🔔 Rappels simples · 💡 Légères</td>
+        <td>Léger · Présent</td>
+        <td style="font-weight:600;color:var(--bleu-nuit)">3–4</td>
+        <td>Commencer doucement · Reposer · Laisser germer · Planifier</td>
+      </tr>
+      <tr>
+        <td><span class="mood-badge mood-float">🌫️ En flottement</span></td>
+        <td style="font-style:italic;color:var(--gris-chaud)">"Rien n'a besoin de prendre forme tout de suite."</td>
+        <td>—</td>
+        <td>Non clarifiées · 💡 Idées · 🌀 Nœuds flottants</td>
+        <td>Tous</td>
+        <td style="font-weight:600;color:var(--gris-chaud)">Libre</td>
+        <td>Laisser flotter · Écrire · Reposer · Clarifier une seule pensée</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     5. CAROUSEL & SWIPE
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">05 — Expérience Signature</div>
+  <div class="section-title">Le carousel — une pensée à la fois</div>
+
+  <div class="swipe-demo" style="margin-bottom:20px">
+    <div class="swipe-left">
+      <div class="swipe-label">Swipe gauche</div>
+      <div class="swipe-options">
+        Reposer<br>
+        Pas maintenant<br>
+        Plus tard
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <div class="arrow-text">←</div>
+      <div class="swipe-center-card">
+        <div class="swipe-sym">🌀</div>
+        <div class="swipe-text">Je me sens bloquée<br>dans ce projet</div>
+        <div class="swipe-energy">Énergie : intense · Monde : Travail</div>
+        <div class="swipe-movement">Déplier</div>
+      </div>
+      <div class="arrow-text">→</div>
+    </div>
+
+    <div class="swipe-right">
+      <div class="swipe-label">Swipe droite</div>
+      <div class="swipe-options">
+        ⚡ À faire → Faire<br>
+        🌀 Ça tourne → Déplier<br>
+        💡 Ça germe → Laisser germer<br>
+        🔔 Rappel → Planifier
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-3" style="gap:14px">
+    <div class="card">
+      <h3>Référence UX</h3>
+      <p>Apple Music album scroller. Carte centrale en focus, cartes secondaires visibles en arrière-plan avec légère opacité réduite. Swipe + geste rotatif type alarme iPhone.</p>
+    </div>
+    <div class="card">
+      <h3>Règle de l'overwhelm</h3>
+      <p>Jamais de liste. Une seule pensée en focus à la fois. Pas de comparaison, pas de hiérarchie agressive. L'utilisateur rencontre une pensée, puis la suivante.</p>
+    </div>
+    <div class="card">
+      <h3>Animations</h3>
+      <p>Fade in doux · transitions lentes · swipe léger · micro-feedback après dépôt. Pas de confetti, pas de trophée. Si progression visuelle : nœud qui se simplifie, fil qui devient clair.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     6. MOUVEMENTS
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">06 — Mouvements</div>
+  <div class="section-title">Les 6 réponses possibles</div>
+
+  <div class="movement-grid">
+    <div class="movement-card">
+      <span class="m-icon">▶</span>
+      <div class="m-name">Faire</div>
+      <div class="m-for">Pour une action claire ⚡</div>
+    </div>
+    <div class="movement-card">
+      <span class="m-icon">📅</span>
+      <div class="m-name">Planifier</div>
+      <div class="m-for">Pour un rappel ou "à ne pas laisser filer" 🔔</div>
+    </div>
+    <div class="movement-card">
+      <span class="m-icon">🔍</span>
+      <div class="m-name">Déplier</div>
+      <div class="m-for">Pour un nœud qui demande à être compris 🌀</div>
+    </div>
+    <div class="movement-card">
+      <span class="m-icon">🌱</span>
+      <div class="m-name">Laisser germer</div>
+      <div class="m-for">Pour une idée en gestation 💡</div>
+    </div>
+    <div class="movement-card">
+      <span class="m-icon">🔗</span>
+      <div class="m-name">Relier</div>
+      <div class="m-for">Pour rattacher à une Bulle</div>
+    </div>
+    <div class="movement-card">
+      <span class="m-icon">💤</span>
+      <div class="m-name">Reposer</div>
+      <div class="m-for">Mettre de côté sans abandonner. "Ce n'est pas oublié."</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     7. LES BULLES
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">07 — Les Bulles</div>
+  <div class="section-title">Des mondes de vie, pas des dossiers</div>
+
+  <div style="margin-bottom:20px">
+    <div class="bubble-grid">
+      <div class="bubble-item bubble-default">🏠 Quotidien</div>
+      <div class="bubble-item bubble-default">💼 Travail</div>
+      <div class="bubble-item bubble-default">🌿 Bien-être</div>
+      <div class="bubble-item">🎨 Création</div>
+      <div class="bubble-item">💰 Finances</div>
+      <div class="bubble-item">✈️ Voyage</div>
+      <div class="bubble-item">🏡 Maison</div>
+      <div class="bubble-item">💞 Relations</div>
+      <div class="bubble-item">🏃 Sport</div>
+      <div class="bubble-item">📁 Projets</div>
+      <div class="bubble-item" style="grid-column:span 2; border-style:dashed; color:var(--gris-chaud)">+ Créer une bulle</div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <h3>Niveau 1 — Vision board</h3>
+      <p>Entrée émotionnelle. Collage vivant, images, 3 mots-clés max, phrase d'intention personnelle, couleur dominante. Ressentir pourquoi cette Bulle existe avant de voir ce qu'elle contient.</p>
+    </div>
+    <div class="card">
+      <h3>Niveau 2 — Ce qui est vivant</h3>
+      <p>Cartes/pensées clarifiées rattachées à cette Bulle. Organisées selon le mood ou l'énergie actuelle. La matrice invisible s'applique aussi ici.</p>
+    </div>
+    <div class="card">
+      <h3>Niveau 3 — Espace flexible</h3>
+      <p>Toggle fermé par défaut : Journal · Routines · Ressources. La profondeur existe, mais reste invisible tant que l'utilisateur n'en a pas besoin.</p>
+    </div>
+  </div>
+
+  <div class="quote-block" style="margin-top:20px;padding:28px 36px">
+    <blockquote style="font-size:16px">"Les Bulles n'apparaissent pas au dépôt. Elles apparaissent après la clarification. Le rattachement se fait par swipe horizontal — comme choisir une tenue qui matche."</blockquote>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     8. MVP SCREENS
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">08 — Écrans MVP</div>
+  <div class="section-title">Les 10 écrans à construire</div>
+
+  <div class="screens-grid">
+    <div class="screen-card s1">
+      <div class="screen-header">✦</div>
+      <div class="screen-body">
+        <div class="screen-num">01</div>
+        <div class="screen-name">Splash / Marque</div>
+        <div class="screen-desc">Logo FLIT, méthode, phrase produit</div>
+      </div>
+    </div>
+    <div class="screen-card s2">
+      <div class="screen-header">⌂</div>
+      <div class="screen-body">
+        <div class="screen-num">02</div>
+        <div class="screen-name">Accueil app</div>
+        <div class="screen-desc">Question centrale + accès Déposer / Clarifier / Moment</div>
+      </div>
+    </div>
+    <div class="screen-card s3">
+      <div class="screen-header">+</div>
+      <div class="screen-body">
+        <div class="screen-num">03</div>
+        <div class="screen-name">Déposer</div>
+        <div class="screen-desc">Champ simple + bouton. Zéro friction.</div>
+      </div>
+    </div>
+    <div class="screen-card s4">
+      <div class="screen-header">◎</div>
+      <div class="screen-body">
+        <div class="screen-num">04</div>
+        <div class="screen-name">Clarifier</div>
+        <div class="screen-desc">Carte + 3 axes : nature · bulle · énergie</div>
+      </div>
+    </div>
+    <div class="screen-card s5">
+      <div class="screen-header">◉</div>
+      <div class="screen-body">
+        <div class="screen-num">05</div>
+        <div class="screen-name">Moment FLIT</div>
+        <div class="screen-desc">Choix du mood actuel (4 états)</div>
+      </div>
+    </div>
+    <div class="screen-card s6">
+      <div class="screen-header">⟺</div>
+      <div class="screen-body">
+        <div class="screen-num">06</div>
+        <div class="screen-name">Carousel</div>
+        <div class="screen-desc">Cartes filtrées, une pensée à la fois, swipe</div>
+      </div>
+    </div>
+    <div class="screen-card s7">
+      <div class="screen-header">◯</div>
+      <div class="screen-body">
+        <div class="screen-num">07</div>
+        <div class="screen-name">Bulles</div>
+        <div class="screen-desc">Liste visuelle des mondes de vie</div>
+      </div>
+    </div>
+    <div class="screen-card s8">
+      <div class="screen-header">❋</div>
+      <div class="screen-body">
+        <div class="screen-num">08</div>
+        <div class="screen-name">Détail Bulle</div>
+        <div class="screen-desc">Vision board + cartes vivantes + espace flexible</div>
+      </div>
+    </div>
+    <div class="screen-card s9">
+      <div class="screen-header">∿</div>
+      <div class="screen-body">
+        <div class="screen-num">09</div>
+        <div class="screen-name">Traces</div>
+        <div class="screen-desc">Progression douce. "Ce qui a trouvé sa place."</div>
+      </div>
+    </div>
+    <div class="screen-card s10">
+      <div class="screen-header">✍</div>
+      <div class="screen-body">
+        <div class="screen-num">10</div>
+        <div class="screen-name">Journal</div>
+        <div class="screen-desc">Accessible depuis 🌀, Bulles, flottement</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     9. NAVIGATION
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">09 — Navigation V1</div>
+  <div class="section-title">Structure de navigation recommandée</div>
+
+  <div class="nav-flow">
+    <div class="nav-item">
+      <span class="nav-icon">⌂</span>
+      <div class="nav-label">Accueil</div>
+      <div class="nav-sub">État · Pensées en attente</div>
+    </div>
+    <div class="nav-item nav-primary">
+      <span class="nav-icon">+</span>
+      <div class="nav-label">Déposer</div>
+      <div class="nav-sub">Geste principal</div>
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">◎</span>
+      <div class="nav-label">Clarifier</div>
+      <div class="nav-sub">Pensées déposées</div>
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">◉</span>
+      <div class="nav-label">Moment</div>
+      <div class="nav-sub">Mood + carousel</div>
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">∿</span>
+      <div class="nav-label">Traces</div>
+      <div class="nav-sub">Progression douce</div>
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-top:14px">
+    <div class="card-gold">
+      <h3>Bulles</h3>
+      <p style="color:var(--encre);font-size:12px">Accessibles depuis Accueil ou Clarifier — pas en onglet principal pour éviter que FLIT ressemble à une app d'organisation par catégories.</p>
+    </div>
+    <div class="card-gold">
+      <h3>Journal</h3>
+      <p style="color:var(--encre);font-size:12px">Pas dans la nav principale. Accessible depuis cartes 🌀, Bulles, mood "En flottement" et "Sous pression". Évite que FLIT soit perçu comme app de journaling.</p>
+    </div>
+    <div class="card-gold">
+      <h3>Règle d'or</h3>
+      <p style="color:var(--encre);font-size:12px">Le bouton "+ Déposer" doit être le geste principal. Toujours visible. Toujours accessible. C'est la porte d'entrée de l'expérience.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     10. STATUTS INTERNES
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">10 — Statuts internes</div>
+  <div class="section-title">Cycle de vie d'une pensée</div>
+
+  <div class="status-flow">
+    <div class="status-node active">Déposé</div>
+    <div class="status-arrow">→</div>
+    <div class="status-node">À clarifier</div>
+    <div class="status-arrow">→</div>
+    <div class="status-node">Clarifié</div>
+    <div class="status-arrow">→</div>
+    <div class="status-node">En mouvement</div>
+    <div class="status-arrow">⤵</div>
+    <div class="status-node">Reposé</div>
+    <div class="status-arrow">→</div>
+    <div class="status-node">A trouvé sa place</div>
+    <div class="status-arrow">→</div>
+    <div class="status-node">Déplié</div>
+    <div class="status-arrow">→</div>
+    <div class="status-node">Archivé</div>
+  </div>
+  <p style="font-size:11px;color:var(--gris-chaud);margin-top:12px">Ces statuts servent la logique de l'app. L'utilisateur ne les voit jamais comme un tableau.</p>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     11. DATA MODEL
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">11 — Modèle de données</div>
+  <div class="section-title">Schéma MVP</div>
+
+  <div class="model-block">
+    <div class="model-file">
+      <div class="model-name">Thought</div>
+      <div class="model-line"><span class="key">id</span>                <span class="type">string</span></div>
+      <div class="model-line"><span class="key">text</span>              <span class="type">string</span></div>
+      <div class="model-line"><span class="key">createdAt</span>         <span class="type">Date</span></div>
+      <div class="model-line"><span class="key">status</span>            <span class="val">"deposed" | "to_clarify" | "clarified" | "in_motion" | "rested" | "placed" | "archived"</span></div>
+      <div class="model-line"><span class="key">nature</span>            <span class="val">null | "action" | "knot" | "idea" | "reminder"</span></div>
+      <div class="model-line"><span class="key">symbol</span>            <span class="val">null | "⚡" | "🌀" | "💡" | "🔔"</span></div>
+      <div class="model-line"><span class="key">bubbleId</span>          <span class="val">null | string</span></div>
+      <div class="model-line"><span class="key">energyRequired</span>    <span class="val">null | "soft" | "normal" | "intense"</span></div>
+      <div class="model-line"><span class="key">mentalWeight</span>      <span class="val">null | "light" | "present" | "heavy"</span></div>
+      <div class="model-line"><span class="key">temporality</span>       <span class="val">null | "now" | "soon" | "someday" | "no_date"</span></div>
+      <div class="model-line"><span class="key">recommendedMovement</span> <span class="val">null | "do" | "plan" | "unfold" | "germinate" | "link" | "rest"</span></div>
+      <div class="model-line"><span class="key">journalEntries</span>    <span class="type">string[]</span></div>
+    </div>
+
+    <div class="model-file">
+      <div class="model-name">Bubble</div>
+      <div class="model-line"><span class="key">id</span>        <span class="type">string</span></div>
+      <div class="model-line"><span class="key">name</span>      <span class="type">string</span></div>
+      <div class="model-line"><span class="key">intention</span> <span class="type">string</span></div>
+      <div class="model-line"><span class="key">color</span>     <span class="type">string</span></div>
+      <div class="model-line"><span class="key">keywords</span>  <span class="type">string[]</span> <span class="comment">// max 3</span></div>
+      <div class="model-line"><span class="key">images</span>    <span class="type">string[]</span></div>
+    </div>
+
+    <div class="model-file">
+      <div class="model-name">JournalEntry</div>
+      <div class="model-line"><span class="key">id</span>         <span class="type">string</span></div>
+      <div class="model-line"><span class="key">thoughtId</span>  <span class="val">string?</span></div>
+      <div class="model-line"><span class="key">bubbleId</span>   <span class="val">string?</span></div>
+      <div class="model-line"><span class="key">type</span>       <span class="val">"free" | "unfold_knot" | "reduce_noise" | "first_step" | "close_day"</span></div>
+      <div class="model-line"><span class="key">content</span>    <span class="type">string</span></div>
+      <div class="model-line"><span class="key">createdAt</span>  <span class="type">Date</span></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     12. JOURNAL
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">12 — Journal</div>
+  <div class="section-title">Templates de dépliage</div>
+
+  <div class="journal-grid">
+    <div class="journal-card">
+      <div class="journal-type">Type 1</div>
+      <div class="journal-name">Écriture libre</div>
+      <div class="journal-q">Déposer sans structure. Aucune contrainte.</div>
+    </div>
+    <div class="journal-card">
+      <div class="journal-type">Type 2</div>
+      <div class="journal-name">Déplier un nœud 🌀</div>
+      <div class="journal-q">
+        Qu'est-ce qui prend vraiment de la place ici ?<br>
+        Qu'est-ce que je porte seule ?<br>
+        Est-ce que ça demande une action, une décision ou simplement de l'espace ?
+      </div>
+    </div>
+    <div class="journal-card">
+      <div class="journal-type">Type 3</div>
+      <div class="journal-name">Réduire le bruit 🔥</div>
+      <div class="journal-q">
+        Qu'est-ce qui tourne en fond ?<br>
+        Qu'est-ce qui est vraiment à ne pas laisser filer ?<br>
+        Quelle est la seule chose à regarder maintenant ?
+      </div>
+    </div>
+    <div class="journal-card">
+      <div class="journal-type">Type 4</div>
+      <div class="journal-name">Premier pas ⚡</div>
+      <div class="journal-q">
+        Quel serait le plus petit mouvement possible ?<br>
+        Qu'est-ce qui rendrait cette tâche moins lourde ?<br>
+        Qu'est-ce qui peut être fait en moins de 5 minutes ?
+      </div>
+    </div>
+    <div class="journal-card">
+      <div class="journal-type">Type 5</div>
+      <div class="journal-name">Fermer la journée</div>
+      <div class="journal-q">
+        Qu'est-ce que je laisse ici ?<br>
+        Qu'est-ce qui peut attendre demain ?<br>
+        Qu'est-ce que je n'ai plus besoin de porter ce soir ?
+      </div>
+    </div>
+    <div class="journal-card" style="background:var(--ivoire-dark)">
+      <div class="journal-type">Règle</div>
+      <div class="journal-name">Le journal n'est pas obligatoire</div>
+      <div class="journal-q">Il s'ouvre depuis les cartes 🌀, les Bulles, le mood "En flottement" ou "Sous pression". C'est l'espace où ce qui prend trop de place peut être déplié avant de prendre forme.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     13. PALETTE
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">13 — Direction Artistique</div>
+  <div class="section-title">Palette & Identité visuelle</div>
+
+  <div class="palette-row" style="margin-bottom:28px">
+    <div class="color-swatch">
+      <div class="color-block" style="background:#F5F0E8"></div>
+      <div class="color-info">
+        <div class="color-name">Ivoire</div>
+        <div class="color-hex">#F5F0E8</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#EDE8DF"></div>
+      <div class="color-info">
+        <div class="color-name">Ivoire dark</div>
+        <div class="color-hex">#EDE8DF</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#1A1714"></div>
+      <div class="color-info">
+        <div class="color-name">Encre</div>
+        <div class="color-hex">#1A1714</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#2C4A3E"></div>
+      <div class="color-info">
+        <div class="color-name">Vert bouteille</div>
+        <div class="color-hex">#2C4A3E</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#20372D"></div>
+      <div class="color-info">
+        <div class="color-name">Vert profond</div>
+        <div class="color-hex">#20372D</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#C4A882"></div>
+      <div class="color-info">
+        <div class="color-name">Doré sourd</div>
+        <div class="color-hex">#C4A882</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#8A8480"></div>
+      <div class="color-info">
+        <div class="color-name">Gris chaud</div>
+        <div class="color-hex">#8A8480</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#2A3548"></div>
+      <div class="color-info">
+        <div class="color-name">Bleu nuit</div>
+        <div class="color-hex">#2A3548</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#4A3728"></div>
+      <div class="color-info">
+        <div class="color-name">Brun tabac</div>
+        <div class="color-hex">#4A3728</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <h3>Le logo</h3>
+      <p>FLIT en capitales espacées · sans-serif fine · fond ivoire · nœud mental abstrait asymétrique · fil qui s'échappe à droite · aucun oiseau · aucun cercle · aucun décor inutile.</p>
+    </div>
+    <div class="card">
+      <h3>Style général</h3>
+      <p>Apple-like · minimaliste · premium · calme · feutrée · digitale · chic · adulte · sobre. Évoque un espace mental privé, un carnet précieux digital, un luxe silencieux.</p>
+    </div>
+    <div class="card">
+      <h3>À éviter absolument</h3>
+      <p>Oiseau · mascotte · pastel wellness · violet Tiimo · gamification visible · badges · trophées · onboarding bavard · tableaux Notion · interface froide.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     14. COPYWRITING
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">14 — Ton de voix</div>
+  <div class="section-title">Copywriting · mots à privilégier vs éviter</div>
+
+  <div class="copy-grid">
+    <div class="copy-block copy-good">
+      <div class="copy-label">✓ Mots FLIT</div>
+      <span class="copy-word">Déposer</span>
+      <span class="copy-word">Clarifier</span>
+      <span class="copy-word">Avancer</span>
+      <span class="copy-word">Reposer</span>
+      <span class="copy-word">Déplier</span>
+      <span class="copy-word">Laisser germer</span>
+      <span class="copy-word">À ne pas laisser filer</span>
+      <span class="copy-word">Prendre forme</span>
+      <span class="copy-word">Alléger</span>
+      <span class="copy-word">Trouver sa place</span>
+      <span class="copy-word">Ce qui tourne en fond</span>
+      <span class="copy-word">Ce qui prend de la place</span>
+      <span class="copy-word">Il y a moins de bruit</span>
+    </div>
+    <div class="copy-block copy-bad">
+      <div class="copy-label">✕ Mots interdits</div>
+      <span class="copy-word">Trier</span>
+      <span class="copy-word">Productivité</span>
+      <span class="copy-word">Urgent</span>
+      <span class="copy-word">Priorité</span>
+      <span class="copy-word">Réussite</span>
+      <span class="copy-word">Performance</span>
+      <span class="copy-word">Transformer ta vie</span>
+      <span class="copy-word">Débloquer</span>
+      <span class="copy-word">Réparer</span>
+      <span class="copy-word">Valider</span>
+      <span class="copy-word">Enregistrer</span>
+      <span class="copy-word">Classer</span>
+      <span class="copy-word">Objectif obligatoire</span>
+    </div>
+  </div>
+
+  <div class="quote-block" style="margin-top:20px">
+    <blockquote>"Rien n'a besoin d'être clair maintenant. · Tu n'as pas besoin de tout porter. · Ce n'est pas oublié. C'est reposé. · On reprend d'ici. Rien n'est en retard."</blockquote>
+    <cite>Exemples de microcopy FLIT</cite>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     15. RÈGLES UX CRITIQUES
+══════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">15 — Règles critiques</div>
+  <div class="section-title">Ce qui ne doit jamais changer</div>
+
+  <div class="rule-list">
+    <div class="rule-item">
+      <div class="rule-num">1</div>
+      <div>
+        <div class="rule-text">Déposer n'est pas clarifier. Clarifier n'est pas faire. Avancer n'est pas forcément terminer.</div>
+        <div class="rule-sub">La règle absolue UX qui guide toute l'expérience.</div>
+      </div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">2</div>
+      <div>
+        <div class="rule-text">Ne jamais afficher les 4 symboles au moment du dépôt.</div>
+        <div class="rule-sub">Le dépôt doit rester pur — aucun choix, aucune catégorie.</div>
+      </div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">3</div>
+      <div>
+        <div class="rule-text">Ne pas afficher de liste. Un écran = une intention principale.</div>
+        <div class="rule-sub">Le carousel et la carte unique sont fondamentaux à l'anti-overwhelm.</div>
+      </div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">4</div>
+      <div>
+        <div class="rule-text">Les Bulles sont des mondes de vie, pas des dossiers froids.</div>
+        <div class="rule-sub">Jamais de métaphore de classeur ou de catégories de productivité.</div>
+      </div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">5</div>
+      <div>
+        <div class="rule-text">Pas de gamification. La progression doit être émotionnelle, subtile, calme.</div>
+        <div class="rule-sub">Pas de streak, score, trophée, pourcentage, "tu as été productive".</div>
+      </div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">6</div>
+      <div>
+        <div class="rule-text">Le retour après absence ne doit jamais culpabiliser.</div>
+        <div class="rule-sub">"On reprend d'ici. Rien n'est en retard." — c'est ce qui crée l'attachement.</div>
+      </div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">7</div>
+      <div>
+        <div class="rule-text">Dans FLIT, ne rien forcer peut aussi être une forme d'avancée.</div>
+        <div class="rule-sub">La profondeur est dans le système. La simplicité doit être dans l'expérience.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════
+     QUOTE FINALE
+══════════════════════════════════ -->
+<div class="quote-block">
+  <blockquote>La profondeur est dans le système.<br>La simplicité doit être dans l'expérience.</blockquote>
+  <cite>Principe de direction finale — FLIT</cite>
+</div>
+
+
+<!-- ══════════════════════════════════
+     FOOTER
+══════════════════════════════════ -->
+<div class="footer">
+  FLIT &nbsp;·&nbsp; Architecture Complète &nbsp;·&nbsp; 2025
+</div>
+
+</body>
+</html>
