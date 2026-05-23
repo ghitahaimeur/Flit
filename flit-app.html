@@ -482,12 +482,10 @@ function render() {
   div.innerHTML = (views[S.view] || home)();
   app.appendChild(div);
 
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      div.classList.add('vis');
-      if (old) { old.classList.add('out'); setTimeout(()=>old.remove(), 220); }
-    });
-  });
+  setTimeout(() => {
+    div.classList.add('vis');
+    if (old) { old.classList.add('out'); setTimeout(()=>old.remove(), 220); }
+  }, 20);
 
   afterRender();
 }
@@ -528,7 +526,7 @@ function navHTML(active) {
 
 // ── VIEW: SPLASH ──────────────────────────────
 function splash() {
-  return `<div class="view vis splash">
+  return `<div class="splash">
     <div style="margin-bottom:32px">
       <svg id="sp-svg" width="240" height="110" viewBox="0 0 240 110" fill="none">
         <path id="sp-knot"
@@ -1205,29 +1203,27 @@ function saveJournal() {
 
 // ── VIEW: RETURN SCREEN ───────────────────────
 function return_screen() {
-  return `<div class="view vis">
-    <div class="rw">
-      <div class="rw-word">FLIT</div>
-      <div class="rw-title">On reprend d'ici.</div>
-      <div class="rw-ph">Rien n'est en retard.</div>
-      <div class="rw-opts">
-        <button class="rw-opt" onclick="go('deposit')">
-          <span>Déposer ce qui est là</span>
-          <span class="rw-opt-arr">→</span>
-        </button>
-        <button class="rw-opt" onclick="go('clarify_list')">
-          <span>Clarifier une seule pensée</span>
-          <span class="rw-opt-arr">→</span>
-        </button>
-        <button class="rw-opt" onclick="go('moment')">
-          <span>Ouvrir un moment doux</span>
-          <span class="rw-opt-arr">→</span>
-        </button>
-        <button class="rw-opt" onclick="go('home')" style="color:var(--gr)">
-          <span>Tout laisser pour plus tard</span>
-          <span class="rw-opt-arr" style="color:var(--gr2)">→</span>
-        </button>
-      </div>
+  return `<div class="rw">
+    <div class="rw-word">FLIT</div>
+    <div class="rw-title">On reprend d'ici.</div>
+    <div class="rw-ph">Rien n'est en retard.</div>
+    <div class="rw-opts">
+      <button class="rw-opt" onclick="go('deposit')">
+        <span>Déposer ce qui est là</span>
+        <span class="rw-opt-arr">→</span>
+      </button>
+      <button class="rw-opt" onclick="go('clarify_list')">
+        <span>Clarifier une seule pensée</span>
+        <span class="rw-opt-arr">→</span>
+      </button>
+      <button class="rw-opt" onclick="go('moment')">
+        <span>Ouvrir un moment doux</span>
+        <span class="rw-opt-arr">→</span>
+      </button>
+      <button class="rw-opt" onclick="go('home')" style="color:var(--gr)">
+        <span>Tout laisser pour plus tard</span>
+        <span class="rw-opt-arr" style="color:var(--gr2)">→</span>
+      </button>
     </div>
   </div>`;
 }
