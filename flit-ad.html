@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLIT</title>
+<style>
+  :root {
+    --ivoire: #F5F0E8;
+    --ivoire-dark: #EDE8DF;
+    --encre: #1A1714;
+    --vert: #2C4A3E;
+    --vert-pro: #20372D;
+    --dore: #C4A882;
+    --gris: #8A8480;
+    --nuit: #2A3548;
+    --tabac: #4A3728;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ivoire);
+    font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ══════════════════════
+     SLIDE 1 — HERO
+  ══════════════════════ */
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+    overflow: hidden;
+    background: var(--ivoire);
+    margin: 0 auto 40px;
+    display: block;
+  }
+
+  /* fond texture */
+  .slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 800px 600px at 70% 50%, rgba(44,74,62,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 500px 400px at 15% 80%, rgba(196,168,130,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ── HEADER ── */
+  .s-header {
+    position: absolute;
+    top: 64px;
+    left: 72px;
+    right: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .s-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .s-logo-knot {
+    width: 28px;
+    height: 20px;
+  }
+
+  .s-logo-text {
+    font-size: 22px;
+    font-weight: 200;
+    letter-spacing: 0.35em;
+    color: var(--encre);
+  }
+
+  .s-badge {
+    background: var(--encre);
+    color: var(--ivoire);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border-radius: 50px;
+  }
+
+  /* ── HEADLINE ── */
+  .s-headline {
+    position: absolute;
+    top: 192px;
+    left: 72px;
+    width: 480px;
+  }
+
+  .s-sup {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dore);
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .s-h1 {
+    font-size: 68px;
+    font-weight: 200;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--encre);
+    margin-bottom: 28px;
+  }
+
+  .s-h1 em {
+    font-style: normal;
+    color: var(--vert);
+  }
+
+  .s-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--gris);
+    line-height: 1.65;
+    max-width: 360px;
+  }
+
+  /* ── METHOD ── */
+  .s-method {
+    position: absolute;
+    top: 620px;
+    left: 72px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .s-step {
+    background: white;
+    border: 1px solid rgba(26,23,20,0.08);
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--encre);
+    white-space: nowrap;
+  }
+
+  .s-step.active {
+    background: var(--vert);
+    color: var(--ivoire);
+    border-color: var(--vert);
+  }
+
+  .s-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--dore);
+    flex-shrink: 0;
+  }
+
+  /* ── CTA ── */
+  .s-cta {
+    position: absolute;
+    bottom: 80px;
+    left: 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .s-cta-main {
+    background: var(--encre);
+    color: var(--ivoire);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 18px 40px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+  }
+
+  .s-cta-main span { font-size: 18px; }
+
+  .s-cta-sub {
+    font-size: 12px;
+    color: var(--gris);
+    letter-spacing: 0.05em;
+    padding-left: 8px;
+  }
+
+  /* ── PHONE ── */
+  .s-phone {
+    position: absolute;
+    right: 60px;
+    top: 80px;
+    width: 380px;
+    height: 780px;
+  }
+
+  .phone-frame {
+    width: 100%;
+    height: 100%;
+    background: var(--encre);
+    border-radius: 52px;
+    position: relative;
+    box-shadow:
+      0 40px 100px rgba(26,23,20,0.28),
+      0 0 0 1.5px rgba(255,255,255,0.08) inset,
+      0 0 0 8px rgba(26,23,20,0.9);
+    overflow: hidden;
+  }
+
+  /* Dynamic island */
+  .phone-island {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 36px;
+    background: #000;
+    border-radius: 50px;
+    z-index: 10;
+  }
+
+  /* Screen */
+  .phone-screen {
+    position: absolute;
+    inset: 8px;
+    background: var(--ivoire);
+    border-radius: 46px;
+    overflow: hidden;
+  }
+
+  /* App content */
+  .app-status {
+    position: absolute;
+    top: 72px;
+    left: 24px;
+    right: 24px;
+    text-align: center;
+  }
+
+  .app-status-label {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dore);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .app-status-title {
+    font-size: 22px;
+    font-weight: 200;
+    color: var(--encre);
+    letter-spacing: 0.08em;
+  }
+
+  .app-question {
+    position: absolute;
+    top: 148px;
+    left: 24px;
+    right: 24px;
+    text-align: center;
+  }
+
+  .app-question p {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--encre);
+    line-height: 1.5;
+    opacity: 0.75;
+  }
+
+  /* Mood cards in phone */
+  .mood-grid {
+    position: absolute;
+    top: 230px;
+    left: 18px;
+    right: 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .mood-item {
+    background: white;
+    border: 1px solid rgba(26,23,20,0.07);
+    border-radius: 16px;
+    padding: 16px 14px;
+    text-align: center;
+  }
+
+  .mood-item.selected {
+    background: var(--vert);
+    border-color: var(--vert);
+  }
+
+  .mood-item .m-ico { font-size: 20px; display: block; margin-bottom: 6px; }
+  .mood-item .m-lbl { font-size: 11px; font-weight: 500; color: var(--encre); }
+  .mood-item.selected .m-lbl { color: var(--ivoire); }
+
+  /* thought card in phone */
+  .thought-card {
+    position: absolute;
+    bottom: 100px;
+    left: 18px;
+    right: 18px;
+    background: white;
+    border-radius: 20px;
+    padding: 18px;
+    box-shadow: 0 4px 24px rgba(26,23,20,0.08);
+    border: 1px solid rgba(26,23,20,0.06);
+  }
+
+  .tc-sym { font-size: 18px; margin-bottom: 8px; display: block; }
+  .tc-text { font-size: 13px; color: var(--encre); line-height: 1.4; margin-bottom: 12px; }
+  .tc-meta { display: flex; align-items: center; justify-content: space-between; }
+  .tc-energy {
+    font-size: 10px;
+    color: var(--gris);
+    background: var(--ivoire-dark);
+    padding: 4px 10px;
+    border-radius: 50px;
+  }
+  .tc-mv {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ivoire);
+    background: var(--vert);
+    padding: 4px 14px;
+    border-radius: 50px;
+  }
+
+  /* phone nav */
+  .phone-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: rgba(245,240,232,0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 8px 16px;
+    border-top: 1px solid rgba(26,23,20,0.06);
+  }
+
+  .phone-nav-item { text-align: center; }
+  .phone-nav-item .ni-ico { font-size: 18px; display: block; margin-bottom: 2px; }
+  .phone-nav-item .ni-lbl { font-size: 9px; color: var(--gris); }
+  .phone-nav-item.ni-active .ni-ico { filter: none; }
+  .phone-nav-item.ni-active .ni-lbl { color: var(--vert); font-weight: 600; }
+
+  /* ── FLOATING CARDS ── */
+  .fc {
+    position: absolute;
+    background: white;
+    border: 1px solid rgba(26,23,20,0.07);
+    border-radius: 20px;
+    padding: 18px 20px;
+    box-shadow: 0 8px 40px rgba(26,23,20,0.08);
+  }
+
+  .fc-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dore);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .fc-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--encre);
+    margin-bottom: 4px;
+  }
+
+  .fc-desc {
+    font-size: 11px;
+    color: var(--gris);
+    line-height: 1.5;
+  }
+
+  /* card 1 — dépôt */
+  .fc-1 {
+    top: 680px;
+    right: 56px;
+    width: 200px;
+    background: var(--vert);
+    border-color: transparent;
+  }
+
+  .fc-1 .fc-label { color: rgba(196,168,130,0.8); }
+  .fc-1 .fc-title { color: var(--ivoire); font-size: 16px; font-weight: 200; line-height: 1.3; }
+  .fc-1 .fc-desc { color: rgba(245,240,232,0.55); }
+
+  /* card 2 — natures */
+  .fc-2 {
+    top: 920px;
+    left: 72px;
+    width: 260px;
+  }
+
+  .natures-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .nature-pill {
+    background: var(--ivoire-dark);
+    border-radius: 50px;
+    padding: 6px 12px;
+    font-size: 11px;
+    color: var(--encre);
+    white-space: nowrap;
+  }
+
+  /* card 3 — bulles */
+  .fc-3 {
+    top: 900px;
+    right: 56px;
+    width: 210px;
+  }
+
+  .bubble-dots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .b-dot {
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 50px;
+    background: var(--ivoire-dark);
+    color: var(--encre);
+  }
+
+  .b-dot.bv { background: var(--vert); color: var(--ivoire); }
+
+  /* card 4 — traces */
+  .fc-4 {
+    top: 1100px;
+    left: 72px;
+    width: 300px;
+    background: var(--encre);
+    border-color: transparent;
+  }
+
+  .fc-4 .fc-label { color: var(--dore); opacity: 0.7; }
+  .fc-4 .fc-title { color: var(--ivoire); }
+  .fc-4 .fc-desc { color: rgba(245,240,232,0.5); }
+
+  .traces-bar {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tbar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tbar-label {
+    font-size: 10px;
+    color: rgba(245,240,232,0.5);
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  .tbar-track {
+    flex: 1;
+    height: 4px;
+    background: rgba(245,240,232,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .tbar-fill {
+    height: 100%;
+    background: var(--dore);
+    border-radius: 2px;
+  }
+
+  /* card 5 — swipe */
+  .fc-5 {
+    top: 1100px;
+    right: 56px;
+    width: 200px;
+  }
+
+  .swipe-arrows {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sw-left, .sw-right {
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 50px;
+  }
+
+  .sw-left { background: rgba(42,53,72,0.08); color: var(--nuit); }
+  .sw-right { background: rgba(44,74,62,0.1); color: var(--vert); }
+
+  .sw-icon { font-size: 16px; color: var(--gris); }
+
+  /* ── TAGLINE BOTTOM ── */
+  .s-tagline {
+    position: absolute;
+    bottom: 36px;
+    right: 72px;
+    text-align: right;
+  }
+
+  .s-tagline p {
+    font-size: 12px;
+    font-style: italic;
+    color: var(--gris);
+    line-height: 1.6;
+  }
+
+  /* ══════════════════════
+     SLIDE 2 — FEATURES
+  ══════════════════════ */
+  .slide-2 {
+    background: var(--encre);
+  }
+
+  .slide-2::before {
+    background:
+      radial-gradient(ellipse 700px 500px at 20% 30%, rgba(44,74,62,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse 600px 400px at 85% 75%, rgba(196,168,130,0.08) 0%, transparent 60%);
+  }
+
+  .s2-header {
+    position: absolute;
+    top: 64px;
+    left: 72px;
+    right: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .s2-logo-text {
+    font-size: 22px;
+    font-weight: 200;
+    letter-spacing: 0.35em;
+    color: var(--ivoire);
+  }
+
+  .s2-num {
+    font-size: 11px;
+    color: rgba(245,240,232,0.3);
+    letter-spacing: 0.1em;
+  }
+
+  .s2-title {
+    position: absolute;
+    top: 160px;
+    left: 72px;
+    right: 72px;
+  }
+
+  .s2-sup {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dore);
+    opacity: 0.8;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .s2-h1 {
+    font-size: 58px;
+    font-weight: 200;
+    color: var(--ivoire);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  /* features grid */
+  .s2-grid {
+    position: absolute;
+    top: 380px;
+    left: 72px;
+    right: 72px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .s2-feat {
+    background: rgba(245,240,232,0.04);
+    border: 1px solid rgba(245,240,232,0.08);
+    border-radius: 20px;
+    padding: 28px 24px;
+    transition: all 0.2s;
+  }
+
+  .s2-feat.highlight {
+    background: var(--vert);
+    border-color: transparent;
+  }
+
+  .s2-feat-ico {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .s2-feat-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ivoire);
+    margin-bottom: 8px;
+  }
+
+  .s2-feat-desc {
+    font-size: 12px;
+    color: rgba(245,240,232,0.45);
+    line-height: 1.65;
+  }
+
+  .s2-feat.highlight .s2-feat-desc {
+    color: rgba(245,240,232,0.65);
+  }
+
+  /* bottom comparison */
+  .s2-compare {
+    position: absolute;
+    bottom: 100px;
+    left: 72px;
+    right: 72px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .cmp-block {
+    border-radius: 20px;
+    padding: 24px;
+  }
+
+  .cmp-yes {
+    background: rgba(44,74,62,0.25);
+    border: 1px solid rgba(44,74,62,0.4);
+  }
+
+  .cmp-no {
+    background: rgba(245,240,232,0.03);
+    border: 1px solid rgba(245,240,232,0.06);
+  }
+
+  .cmp-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .cmp-yes .cmp-label { color: rgba(196,168,130,0.8); }
+  .cmp-no .cmp-label { color: rgba(245,240,232,0.25); }
+
+  .cmp-item {
+    font-size: 13px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(245,240,232,0.06);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cmp-item:last-child { border-bottom: none; }
+  .cmp-yes .cmp-item { color: rgba(245,240,232,0.8); }
+  .cmp-no .cmp-item { color: rgba(245,240,232,0.3); text-decoration: line-through; }
+
+  .cmp-ico { font-size: 13px; }
+
+  .s2-bottom-line {
+    position: absolute;
+    bottom: 52px;
+    left: 72px;
+    right: 72px;
+    text-align: center;
+    font-size: 13px;
+    font-style: italic;
+    color: rgba(245,240,232,0.3);
+    letter-spacing: 0.05em;
+  }
+
+  /* ══════════════════════
+     SLIDE 3 — HOW IT WORKS
+  ══════════════════════ */
+  .slide-3 {
+    background: var(--ivoire);
+  }
+
+  .s3-header {
+    position: absolute;
+    top: 64px;
+    left: 72px;
+    right: 72px;
+  }
+
+  .s3-sup {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dore);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .s3-h1 {
+    font-size: 58px;
+    font-weight: 200;
+    color: var(--encre);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  /* steps */
+  .s3-steps {
+    position: absolute;
+    top: 300px;
+    left: 72px;
+    right: 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .s3-step {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0;
+    position: relative;
+  }
+
+  .s3-step-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .s3-step-circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 300;
+    flex-shrink: 0;
+    z-index: 2;
+  }
+
+  .sc-1 { background: var(--vert); color: var(--ivoire); }
+  .sc-2 { background: var(--encre); color: var(--ivoire); }
+  .sc-3 { background: var(--nuit); color: var(--ivoire); }
+
+  .s3-connector {
+    width: 1px;
+    flex: 1;
+    background: rgba(26,23,20,0.1);
+    margin: 4px 0;
+  }
+
+  .s3-step-content {
+    padding: 4px 0 48px 24px;
+  }
+
+  .s3-step-title {
+    font-size: 28px;
+    font-weight: 200;
+    color: var(--encre);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .s3-step-desc {
+    font-size: 14px;
+    color: var(--gris);
+    line-height: 1.65;
+    max-width: 600px;
+    margin-bottom: 16px;
+  }
+
+  .s3-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .s3-tag {
+    background: rgba(26,23,20,0.06);
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--encre);
+  }
+
+  .s3-tag.tg { background: rgba(44,74,62,0.1); color: var(--vert); }
+  .s3-tag.tb { background: rgba(42,53,72,0.1); color: var(--nuit); }
+  .s3-tag.td { background: rgba(196,168,130,0.18); color: var(--tabac); }
+
+  /* bottom quote */
+  .s3-quote {
+    position: absolute;
+    bottom: 72px;
+    left: 72px;
+    right: 72px;
+    background: var(--vert);
+    border-radius: 24px;
+    padding: 36px 40px;
+  }
+
+  .s3-q-text {
+    font-size: 20px;
+    font-weight: 200;
+    color: var(--ivoire);
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    max-width: 700px;
+  }
+
+  .s3-q-author {
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--dore);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* print helper */
+  @media print {
+    body { background: white; }
+    .slide { margin-bottom: 0; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     SLIDE 1 — HERO
+══════════════════════════════════ -->
+<div class="slide">
+
+  <!-- Header -->
+  <div class="s-header">
+    <div class="s-logo">
+      <svg class="s-logo-knot" viewBox="0 0 28 20" fill="none">
+        <path d="M5 10 C5 6, 10 3, 14 6 C18 9, 23 6, 23 10 C23 14, 18 17, 14 14 C10 11, 5 14, 5 10 Z" stroke="#1A1714" stroke-width="1.2" fill="none"/>
+        <path d="M23 10 L28 8" stroke="#1A1714" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <span class="s-logo-text">FLIT</span>
+    </div>
+    <div class="s-badge">Bientôt disponible</div>
+  </div>
+
+  <!-- Headline -->
+  <div class="s-headline">
+    <span class="s-sup">Déposer · Clarifier · Avancer</span>
+    <h1 class="s-h1">Dépose ce qui<br>prend de<br>la <em>place.</em></h1>
+    <p class="s-sub">Un espace mental premium pour clarifier tes pensées et avancer selon ton état intérieur — sans te brusquer.</p>
+  </div>
+
+  <!-- Method pills -->
+  <div class="s-method">
+    <div class="s-step active">Déposer</div>
+    <div class="s-dot"></div>
+    <div class="s-step">Clarifier</div>
+    <div class="s-dot"></div>
+    <div class="s-step">Avancer</div>
+  </div>
+
+  <!-- Phone mockup -->
+  <div class="s-phone">
+    <div class="phone-frame">
+      <div class="phone-island"></div>
+      <div class="phone-screen">
+
+        <!-- App content: Moment FLIT -->
+        <div class="app-status">
+          <span class="app-status-label">Moment FLIT</span>
+          <div class="app-status-title">Comment tu arrives ?</div>
+        </div>
+
+        <div class="app-question">
+          <p>Choisis ton état intérieur.<br>FLIT s'adapte à toi.</p>
+        </div>
+
+        <div class="mood-grid">
+          <div class="mood-item">
+            <span class="m-ico">⚡</span>
+            <span class="m-lbl">On fire</span>
+          </div>
+          <div class="mood-item selected">
+            <span class="m-ico">🌿</span>
+            <span class="m-lbl">Au ralenti</span>
+          </div>
+          <div class="mood-item">
+            <span class="m-ico">🔥</span>
+            <span class="m-lbl">Sous pression</span>
+          </div>
+          <div class="mood-item">
+            <span class="m-ico">🌫️</span>
+            <span class="m-lbl">En flottement</span>
+          </div>
+        </div>
+
+        <!-- Card -->
+        <div class="thought-card">
+          <span class="tc-sym">💡</span>
+          <div class="tc-text">Lancer le projet créatif qui attend depuis des semaines</div>
+          <div class="tc-meta">
+            <span class="tc-energy">Énergie douce</span>
+            <span class="tc-mv">Laisser germer</span>
+          </div>
+        </div>
+
+        <!-- Nav -->
+        <div class="phone-nav">
+          <div class="phone-nav-item">
+            <span class="ni-ico">⌂</span>
+            <span class="ni-lbl">Accueil</span>
+          </div>
+          <div class="phone-nav-item">
+            <span class="ni-ico">+</span>
+            <span class="ni-lbl">Déposer</span>
+          </div>
+          <div class="phone-nav-item ni-active">
+            <span class="ni-ico">◉</span>
+            <span class="ni-lbl">Moment</span>
+          </div>
+          <div class="phone-nav-item">
+            <span class="ni-ico">∿</span>
+            <span class="ni-lbl">Traces</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating card 1 — Dépôt -->
+  <div class="fc fc-1">
+    <span class="fc-label">Le geste d'entrée</span>
+    <div class="fc-title">Rien n'a besoin<br>d'être clair.</div>
+    <div class="fc-desc" style="margin-top:8px">Dépose. On clarifie après.</div>
+  </div>
+
+  <!-- Floating card 2 — Natures -->
+  <div class="fc fc-2">
+    <span class="fc-label">4 natures de pensée</span>
+    <div class="fc-title">Chaque pensée est différente</div>
+    <div class="natures-row">
+      <span class="nature-pill">⚡ À faire</span>
+      <span class="nature-pill">🌀 Ça tourne</span>
+    </div>
+    <div class="natures-row" style="margin-top:0">
+      <span class="nature-pill">💡 Ça germe</span>
+      <span class="nature-pill">🔔 Ne pas oublier</span>
+    </div>
+  </div>
+
+  <!-- Floating card 3 — Bulles -->
+  <div class="fc fc-3">
+    <span class="fc-label">Tes mondes de vie</span>
+    <div class="fc-title">Les Bulles</div>
+    <div class="bubble-dots">
+      <span class="b-dot bv">💼 Travail</span>
+      <span class="b-dot bv">🏠 Quotidien</span>
+      <span class="b-dot">🎨 Création</span>
+      <span class="b-dot">🌿 Bien-être</span>
+    </div>
+  </div>
+
+  <!-- Floating card 4 — Traces -->
+  <div class="fc fc-4">
+    <span class="fc-label">Progression douce</span>
+    <div class="fc-title">Traces</div>
+    <div class="traces-bar">
+      <div class="tbar-row">
+        <span class="tbar-label">Déposées</span>
+        <div class="tbar-track"><div class="tbar-fill" style="width:78%"></div></div>
+      </div>
+      <div class="tbar-row">
+        <span class="tbar-label">Clarifiées</span>
+        <div class="tbar-track"><div class="tbar-fill" style="width:54%"></div></div>
+      </div>
+      <div class="tbar-row">
+        <span class="tbar-label">Reposées</span>
+        <div class="tbar-track"><div class="tbar-fill" style="width:35%"></div></div>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:11px;color:rgba(245,240,232,0.4);font-style:italic">Il y a moins de bruit.</div>
+  </div>
+
+  <!-- Floating card 5 — Swipe -->
+  <div class="fc fc-5">
+    <span class="fc-label">Carousel anti-overwhelm</span>
+    <div class="fc-title">Une pensée à la fois</div>
+    <div class="swipe-arrows">
+      <span class="sw-left">← Reposer</span>
+      <span class="sw-icon">⟺</span>
+      <span class="sw-right">Faire →</span>
+    </div>
+  </div>
+
+  <!-- Tagline -->
+  <div class="s-tagline">
+    <p>La profondeur est dans le système.<br>La simplicité dans l'expérience.</p>
+  </div>
+
+</div><!-- /slide 1 -->
+
+
+<!-- ══════════════════════════════════
+     SLIDE 2 — FEATURES
+══════════════════════════════════ -->
+<div class="slide slide-2">
+
+  <div class="s2-header">
+    <span class="s2-logo-text">FLIT</span>
+    <span class="s2-num">02 / 03</span>
+  </div>
+
+  <div class="s2-title">
+    <span class="s2-sup">Ce que FLIT change</span>
+    <h2 class="s2-h1">Un système pensé<br>pour ton énergie réelle.</h2>
+  </div>
+
+  <div class="s2-grid">
+    <div class="s2-feat highlight">
+      <span class="s2-feat-ico">◉</span>
+      <div class="s2-feat-title">Matrice invisible</div>
+      <div class="s2-feat-desc">FLIT filtre tes pensées selon ton mood, l'énergie requise, le poids mental. Tu vois uniquement ce que tu peux porter maintenant.</div>
+    </div>
+    <div class="s2-feat">
+      <span class="s2-feat-ico">⟺</span>
+      <div class="s2-feat-title">Carousel anti-overwhelm</div>
+      <div class="s2-feat-desc">Jamais de liste. Une pensée à la fois. Swipe pour appliquer le mouvement juste. Inspiré du lecteur Apple Music.</div>
+    </div>
+    <div class="s2-feat">
+      <span class="s2-feat-ico">◯</span>
+      <div class="s2-feat-title">Les Bulles</div>
+      <div class="s2-feat-desc">Des mondes de vie, pas des dossiers. Vision board + pensées vivantes + espace flexible. La profondeur existe, invisible par défaut.</div>
+    </div>
+    <div class="s2-feat">
+      <span class="s2-feat-ico">+</span>
+      <div class="s2-feat-title">Dépôt pur</div>
+      <div class="s2-feat-desc">Aucune friction. Un champ, un bouton. La clarification arrive après. Déposer n'est pas clarifier.</div>
+    </div>
+    <div class="s2-feat highlight" style="background:var(--nuit)">
+      <span class="s2-feat-ico">🌫️</span>
+      <div class="s2-feat-title">Mode surcharge</div>
+      <div class="s2-feat-desc">En mode "Sous pression", l'interface se vide. 1 à 3 cartes max. Option "tout reposer". Tu n'as pas besoin de tout porter maintenant.</div>
+    </div>
+    <div class="s2-feat">
+      <span class="s2-feat-ico">∿</span>
+      <div class="s2-feat-title">Traces</div>
+      <div class="s2-feat-desc">La progression émotionnelle. Pas de streak, pas de score. Juste : "Ce qui a trouvé sa place." Il y a moins de bruit.</div>
+    </div>
+  </div>
+
+  <div class="s2-compare">
+    <div class="cmp-block cmp-yes">
+      <div class="cmp-label">✓ Avec FLIT</div>
+      <div class="cmp-item"><span class="cmp-ico">◎</span> Déposer sans trier</div>
+      <div class="cmp-item"><span class="cmp-ico">◎</span> Avancer selon son énergie</div>
+      <div class="cmp-item"><span class="cmp-ico">◎</span> Reposer sans perdre</div>
+      <div class="cmp-item"><span class="cmp-ico">◎</span> Revenir sans culpabilité</div>
+    </div>
+    <div class="cmp-block cmp-no">
+      <div class="cmp-label">✕ Sans FLIT</div>
+      <div class="cmp-item"><span class="cmp-ico">✕</span> Listes qui s'accumulent</div>
+      <div class="cmp-item"><span class="cmp-ico">✕</span> Overwhelm permanent</div>
+      <div class="cmp-item"><span class="cmp-ico">✕</span> Pensées perdues en fond</div>
+      <div class="cmp-item"><span class="cmp-ico">✕</span> Brouillard mental</div>
+    </div>
+  </div>
+
+  <div class="s2-bottom-line">
+    Déposer · Clarifier · Avancer &nbsp;·&nbsp; FLIT
+  </div>
+
+</div><!-- /slide 2 -->
+
+
+<!-- ══════════════════════════════════
+     SLIDE 3 — HOW IT WORKS
+══════════════════════════════════ -->
+<div class="slide slide-3">
+
+  <div class="s3-header">
+    <span class="s3-sup">Comment ça fonctionne</span>
+    <h2 class="s3-h1">Trois gestes.<br>Une règle absolue.</h2>
+  </div>
+
+  <div class="s3-steps">
+
+    <div class="s3-step">
+      <div class="s3-step-line">
+        <div class="s3-step-circle sc-1">1</div>
+        <div class="s3-connector"></div>
+      </div>
+      <div class="s3-step-content">
+        <div class="s3-step-title">Déposer</div>
+        <p class="s3-step-desc">Un champ, un bouton. Aucune catégorie, aucun symbole, aucune décision. La pensée sort de la tête et atterrit en sécurité. C'est tout ce que Déposer demande.</p>
+        <div class="s3-tags">
+          <span class="s3-tag tg">Zéro friction</span>
+          <span class="s3-tag tg">Aucun choix</span>
+          <span class="s3-tag tg">Statut : Déposé</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="s3-step">
+      <div class="s3-step-line">
+        <div class="s3-step-circle sc-2">2</div>
+        <div class="s3-connector"></div>
+      </div>
+      <div class="s3-step-content">
+        <div class="s3-step-title">Clarifier</div>
+        <p class="s3-step-desc">Plus tard, quand tu es prête. La pensée s'affiche au centre. Tu lui donnes une nature (⚡🌀💡🔔), une Bulle si elle en a une, et une énergie. Pas un formulaire. Un geste.</p>
+        <div class="s3-tags">
+          <span class="s3-tag tb">Nature</span>
+          <span class="s3-tag tb">Bulle</span>
+          <span class="s3-tag tb">Énergie</span>
+          <span class="s3-tag">C'est assez clair.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="s3-step" style="margin-bottom:0">
+      <div class="s3-step-line">
+        <div class="s3-step-circle sc-3">3</div>
+      </div>
+      <div class="s3-step-content" style="padding-bottom:0">
+        <div class="s3-step-title">Avancer</div>
+        <p class="s3-step-desc">Tu choisis ton mood. FLIT active la matrice invisible et te montre une carte à la fois — celle qui correspond à ce que tu peux porter maintenant. Swipe pour appliquer le mouvement juste.</p>
+        <div class="s3-tags">
+          <span class="s3-tag td">Faire</span>
+          <span class="s3-tag td">Déplier</span>
+          <span class="s3-tag td">Laisser germer</span>
+          <span class="s3-tag td">Reposer</span>
+          <span class="s3-tag td">Planifier</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="s3-quote">
+    <div class="s3-q-text">Dans FLIT, ne rien forcer peut aussi<br>être une forme d'avancée.</div>
+    <div class="s3-q-author">Principe fondateur · FLIT 2025</div>
+  </div>
+
+</div><!-- /slide 3 -->
+
+</body>
+</html>
